@@ -55,9 +55,6 @@ export default function ClientComponent() {
     },
     [flatData]
   );
-
-  //#region  //*=========== User Selecting ===========
-  //#endregion  //*======== Supplier Selecting ===========
   return (
     <ShadowedBox className="flex-1">
       <div className="flex h-[76px] w-full justify-between">

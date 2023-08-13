@@ -6,7 +6,9 @@ import { cn as clsxm } from "@/lib/utils";
 
 import { BsFacebook, BsGithub, BsTwitter } from "react-icons/bs";
 import { useAuth } from "@/hooks/useAuth";
-import Typography from "../Typography";
+import Button from "@/components/buttons/Button";
+import { ImInfo } from "react-icons/im";
+import UserInfoModal from "@/components/layout/LoggedInUserDetailModal";
 
 export type IndexNavbarProps = {
   transparent?: boolean;
@@ -21,7 +23,7 @@ export default function Navbar({
   className,
   ...rest
 }: IndexNavbarProps) {
-  const { email, token } = useAuth();
+  const { token } = useAuth();
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   const [fadeInStart, setFadeInStart] = React.useState(false);
   React.useEffect(() => {
@@ -59,9 +61,7 @@ export default function Navbar({
               <i className="fas fa-bars"></i>
             </button>
           </div>
-          <Typography variant="h6">
-            {email} {token}
-          </Typography>
+          {token && <UserInfoModal />}
           <div
             className={clsxm(
               "flex-grow items-center rounded bg-white md:rounded-none lg:flex lg:bg-opacity-0 lg:shadow-none",

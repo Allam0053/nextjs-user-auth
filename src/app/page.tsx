@@ -7,14 +7,12 @@ import HomeSectionSearchWrapper from "@/components/layout/HomeSectionSearchWrapp
 import LayoutFooter from "@/components/layout/LayoutFooter";
 import LoginForm from "./components/LoginForm";
 import TanStackReactQueryProveider from "@/components/providers/ReactQuery";
-import { useAuth } from "@/hooks/useAuth";
 
 // !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
 export default function HomePage() {
-  const { email } = useAuth()
   return (
     <TanStackReactQueryProveider>
       <Layout isHScreen>

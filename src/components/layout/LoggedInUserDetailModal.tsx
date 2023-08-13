@@ -1,4 +1,8 @@
+"use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useQueryClient } from "@tanstack/react-query";
+import { ImInfo } from "react-icons/im";
 import axios from "axios";
 import { get } from "lodash";
 import React, { useContext } from "react";
@@ -30,6 +34,10 @@ import {
 import ModalInput from "@/components/forms/ModalInput";
 
 import API_ENDPOINT from "@/services/api-endpoint";
+import { useAuth, useAuthDispatch } from "@/hooks/useAuth";
+import Typography from "../Typography";
+import ButtonLink from "../links/ButtonLink";
+import { useRouter } from "next/navigation";
 
 export const {
   Context: ModalContext,
@@ -41,7 +49,7 @@ export const {
 export const useModalState = () => useContext(ModalContext);
 export const useModalDispatch = () => useContext(ModalDispatchContext);
 
-export default function RegisterModal() {
+export default function UserInfoModal() {
   const methods = useForm({
     mode: "all",
   });
@@ -79,15 +87,13 @@ function ModalStateConsumer() {
         onOpenChange={toggleModal}
       >
         <DialogTrigger asChild>
-          <Button size="xs" onClick={openModal}>
-            Create account
+          <Button leftIcon={ImInfo} size="xs" onClick={openModal}>
+            Info User
           </Button>
         </DialogTrigger>
         <DialogContent className="z-[60]" overlayClassName="z-[59]">
           {modalState?.status === "main" && <MainModalContent />}
           {modalState?.status === "confirm" && <ConfirmModalContent />}
-          {modalState?.status === "confirmed" && <ConfirmedModalContent />}
-          {modalState?.status === "failed" && <FailedModalContent />}
         </DialogContent>
       </DialogRoot>
     </>
@@ -111,64 +117,63 @@ export function MainModalContent() {
     []
   );
 
-  const requiredFieldIds = ["email", "password"];
-  const { formState, watch } = useFormContext();
-  const requiredFieldValues = watch(requiredFieldIds);
-  const isPermittedContinue = React.useMemo(() => {
-    // console.log({ requiredFieldValues });
-    if (
-      requiredFieldValues.some((value) => value === "" || value === undefined)
-    ) {
-      return false;
-    }
-    if (Object.keys(formState.errors).length > 0) {
-      return false;
-    }
-    return true;
-  }, [formState.errors, requiredFieldValues]);
+  const { user, token, email } = useAuth();
 
   return (
     <>
-      <DialogTitle>User Baru</DialogTitle>
-      <DialogDescription>Masukkan User Baru</DialogDescription>
-      <form className="flex w-full flex-col">
-        <ModalInput
-          id="email"
-          label={
+      <div className="flex flex-col items-center gap-1 space-x-6">
+        <Typography as="label" variant="h2" className="mb-4 block">
+          Detail Logged In
+        </Typography>
+        {get(user, "avatar") && (
+          <img
+            className="mb-2 max-w-[120px] rounded-full"
+            src={get(user, "avatar", "")}
+            alt={get(user, "first_name", "")}
+          />
+        )}
+        <div className="grid w-full grid-cols-2">
+          <Typography as="label" variant="s3" className="block font-bold">
+            token
+          </Typography>
+          <Typography as="label" variant="h6" className="block font-medium">
+            {token}
+          </Typography>
+          {email && (
             <>
-              Email
-              <span className="pl-2 text-red-500">*</span>
+              <Typography as="label" variant="s3" className="block font-bold">
+                email
+              </Typography>
+              <Typography as="label" variant="h6" className="block font-medium">
+                {email}
+              </Typography>
             </>
-          }
-          validation={{ required: "Email tidak boleh kosong" }}
-          placeholder="name@email.com"
-          helperText="Email User"
-          onKeyDown={handleChangeFocusTextInput}
-        />
+          )}
+        </div>
 
-        <ModalInput
-          id="password"
-          type="password"
-          label={
-            <>
-              Password
-              <span className="pl-2 text-red-500">*</span>
-            </>
-          }
-          validation={{ required: "Password tidak boleh kosong" }}
-          onKeyDown={handleChangeFocusTextInput}
-        />
-      </form>
+        {/* {user && (
+          <Typography as="label" variant="h5" className="mb-4 block">
+            User
+          </Typography>
+        )}
+        {user &&
+          Object.entries(user).map(([key, value], index) => (
+            <div className="grid w-full grid-cols-2">
+              <Typography as="label" variant="s3" className="block font-bold">
+                {key}
+              </Typography>
+              <Typography as="label" variant="h6" className="block font-medium">
+                {value}
+              </Typography>
+            </div>
+          ))} */}
+      </div>
       <DialogAction>
         <Button variant="outline" onClick={closeModal}>
           Cancel
         </Button>
-        <Button
-          disabled={!isPermittedContinue}
-          variant={isPermittedContinue ? "primary" : "outline"}
-          onClick={nextStep}
-        >
-          Save
+        <Button variant="danger" onClick={nextStep}>
+          Log Out
         </Button>
       </DialogAction>
     </>
@@ -222,82 +227,25 @@ export function ConfirmModalContent() {
   const nextModal = React.useCallback(() => {
     handleSubmit(onSubmit)();
   }, [handleSubmit, onSubmit]);
+
+  const router = useRouter();
+  const dispatchAuth = useAuthDispatch();
+  const logout = React.useCallback(() => {
+    dispatchAuth({ type: "LOGOUT" });
+    dispatchAuth({ type: "CLEAR_AUTH" });
+    // router.push("/logout");
+  }, [dispatchAuth, router, router.push]);
   return (
     <>
-      <DialogTitle>Konfirmasi User Baru</DialogTitle>
-      <DialogDescription>Yakin menambahkan data?</DialogDescription>
+      <DialogTitle>Konfirmasi Logout</DialogTitle>
+      <DialogDescription>Yakin Logout?</DialogDescription>
       <DialogAction>
         <Button variant="outline" onClick={prevModal}>
-          Cek Kembali
+          Batal
         </Button>
-        <Button onClick={nextModal} type="submit">
-          Simpan
+        <Button onClick={logout} variant="danger">
+          Log Out
         </Button>
-      </DialogAction>
-    </>
-  );
-}
-
-export function ConfirmedModalContent() {
-  const dispatch = useModalDispatch();
-  const { reset } = useFormContext();
-  const inputLagi = React.useCallback(() => {
-    reset();
-    dispatch({ type: "OPEN" });
-  }, [dispatch, reset]);
-  const sampun = React.useCallback(() => {
-    reset();
-    dispatch({ type: "CLOSE" });
-  }, [dispatch, reset]);
-  return (
-    <>
-      <DialogTitle className="flex items-center">
-        <FiCheckCircle className="mr-2 inline-block h-6 w-6 fill-white stroke-emerald-500" />
-        Data Berhasil Disimpan
-      </DialogTitle>
-      <DialogDescription>Data user telah berhasil disimpan</DialogDescription>
-      <DialogAction>
-        <Button variant="outline" onClick={sampun}>
-          Selesai
-        </Button>
-        <Button onClick={inputLagi}>Input Lagi</Button>
-      </DialogAction>
-    </>
-  );
-}
-
-// failed modal
-export function FailedModalContent() {
-  const { failedMessage, failedCode, failedErrors } =
-    useModalState() as ModalContextType;
-  const dispatch = useModalDispatch();
-  const inputLagi = React.useCallback(
-    () => dispatch({ type: "OPEN" }),
-    [dispatch]
-  );
-  const sampun = React.useCallback(
-    () => dispatch({ type: "CLOSE" }),
-    [dispatch]
-  );
-  return (
-    <>
-      <DialogTitle className="flex items-center">
-        <FiXCircle className="mr-2 inline-block h-6 w-6 fill-white stroke-red-500" />
-        {failedCode} Data Gagal Disimpan
-      </DialogTitle>
-      <DialogDescription>
-        Data user telah gagal disimpan <p>{failedMessage}</p>
-        {failedErrors &&
-          failedErrors.length > 0 &&
-          failedErrors.map((message, index) => (
-            <li key={`error-message-${index}`}>{message}</li>
-          ))}
-      </DialogDescription>
-      <DialogAction>
-        <Button variant="outline" onClick={sampun}>
-          Selesai
-        </Button>
-        <Button onClick={inputLagi}>Cek Kembali</Button>
       </DialogAction>
     </>
   );

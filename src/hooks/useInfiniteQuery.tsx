@@ -4,6 +4,7 @@ import {
   UseInfiniteQueryOptions,
 } from "@tanstack/react-query";
 import axios from "axios";
+import { get } from "lodash";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
@@ -46,10 +47,10 @@ export default function useInfiniteQueryCommon<T>({
         // take: CONFIG.take,
         // order: CONFIG.order,
         page: pageParam,
-        ...searchParams,
-        ...passedParams,
+        // ...searchParams,
+        // ...passedParams,
       };
-      const url = `${CONFIG.BASE_URL}${module}`;
+      const url = `${CONFIG.BASE_URL}${module}?${paramBuilder(toBeParams)}`;
       const response = await axios.get(url);
       return response.data;
     },
@@ -76,8 +77,11 @@ export default function useInfiniteQueryCommon<T>({
     fetchSearchResults,
     {
       getNextPageParam: (lastPage) => {
-        const { pagination } = lastPage as { pagination: Pagination };
-        return pagination?.has_next_page ? pagination?.page + 1 : null;
+        console.log({ lastPage });
+        // const { pagination } = lastPage as { pagination: Pagination };
+        const currentPage = get(lastPage, "page", 1);
+        const lastIndexPage = get(lastPage, "total_pages", 1);
+        return currentPage < lastIndexPage ? currentPage + 1 : null;
       },
       ...useInfiniteQueryOptions,
     }
@@ -131,9 +135,7 @@ export function paramBuilder(props: object) {
 
 export interface Pagination {
   page: number;
-  take: number;
-  item_count: number;
-  page_count: number;
-  has_previous_page: boolean;
-  has_next_page: boolean;
+  per_page: number;
+  total: number;
+  total_pages: number;
 }

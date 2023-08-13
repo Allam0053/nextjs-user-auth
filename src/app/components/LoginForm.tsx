@@ -68,6 +68,9 @@ export default function LoginForm() {
             payload: {
               token: responseData.token,
               email: data.email,
+              user: {
+                email: data.email,
+              },
             },
           });
           dispatchAuth({

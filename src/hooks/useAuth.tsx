@@ -58,21 +58,25 @@ function reducer(state: AuthContextType, action: AuthActionType) {
     case "LOGIN": {
       // localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(state));
       Cookies.set("auth", "true");
+      console.log("auth login");
       return {
         ...state,
         ...action.payload,
         status: "authorized",
         token: action.payload.token,
+        email: action.payload.email,
         user: action.payload.user,
       };
     }
     case "LOGOUT": {
+      console.log("auth logout");
+      localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify({}));
       localStorage.removeItem(ACCESS_TOKEN_KEY);
       Cookies.remove("auth");
       return {
-        ...state,
         status: STATUS.unauthorized,
         token: "",
+        user: {},
       };
     }
     case "POPULATE":
@@ -98,11 +102,13 @@ function reducer(state: AuthContextType, action: AuthActionType) {
         status: action.payload,
       };
     case "SAVE_AUTH":
+      console.log("auth save");
       localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(state));
       return {
         ...state,
       };
     case "LOAD_AUTH": {
+      console.log("auth loaded");
       const currentUserDataJSON = localStorage.getItem(ACCESS_TOKEN_KEY);
       const currentUserData = JSON.parse(
         currentUserDataJSON || JSON.stringify(initial_value)
@@ -114,6 +120,7 @@ function reducer(state: AuthContextType, action: AuthActionType) {
     }
     case "CLEAR_AUTH":
       localStorage.removeItem(ACCESS_TOKEN_KEY);
+      console.log("auth cleared");
       return {
         ...state,
       };
@@ -125,6 +132,8 @@ function reducer(state: AuthContextType, action: AuthActionType) {
 const AuthContext = createContext({
   status: "loading",
   token: "",
+  email: "",
+  user: {},
 } as AuthContextType);
 const AuthDispatchContext = createContext<AuthDispatchContextType>(() => {
   return;
@@ -178,6 +187,8 @@ function MiddlewareAuth({ children }: { children: JSX.Element }) {
       dispatch({
         type: "LOGIN",
         payload: {
+          ...currentUserData,
+          email: currentUserData.email,
           token: currentUserData.token,
         },
       });
