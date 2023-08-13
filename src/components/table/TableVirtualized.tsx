@@ -10,22 +10,22 @@ import {
   SortingState,
   Table,
   useReactTable,
-} from '@tanstack/react-table';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { get } from 'lodash';
-import * as React from 'react';
-import { useElementSize } from 'usehooks-ts';
+} from "@tanstack/react-table";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { get } from "lodash";
+import * as React from "react";
+import { useElementSize } from "usehooks-ts";
 
-import clsxm from '@/lib/clsxm';
+import { cn as clsxm } from "@/lib/utils";
 
-import Filter from '@/components/table/Filter';
-import TBodyVirtualized from '@/components/table/TBodyVirtualized';
-import TFoot from '@/components/table/TFoot';
-import THead from '@/components/table/THead';
+import Filter from "@/components/table/Filter";
+import TBodyVirtualized from "@/components/table/TBodyVirtualized";
+import TFoot from "@/components/table/TFoot";
+import THead from "@/components/table/THead";
 
 export type TFootCustomProps<T extends RowData> = {
   table: Table<T>;
-} & React.ComponentPropsWithoutRef<'div'>;
+} & React.ComponentPropsWithoutRef<"div">;
 
 export type ExpandableT<T> = T & {
   subRows?: T[];
@@ -38,7 +38,7 @@ export type TableProps<T extends object> = {
   withFilter?: boolean;
   withFooter?: boolean;
   isLoading?: boolean;
-  columnResizeMode?: 'onEnd' | 'onChange';
+  columnResizeMode?: "onEnd" | "onChange";
   bodyPlaceholder?: React.ReactNode;
   onRowClick?: (event: React.MouseEvent, index?: number | string) => void;
   isSelectedFn?: (index?: number | string) => boolean;
@@ -51,7 +51,7 @@ export type TableProps<T extends object> = {
   };
   isExpandableRows?: boolean;
   defaultSort?: SortingState;
-} & React.ComponentPropsWithoutRef<'div'>;
+} & React.ComponentPropsWithoutRef<"div">;
 
 /**
  * uncomment dark styles if you want to enable dark theme
@@ -61,7 +61,7 @@ export default function TableVirtualized<T extends object>({
   className,
   columns,
   data,
-  columnResizeMode = 'onEnd',
+  columnResizeMode = "onEnd",
   omitSort = false,
   withFilter = false,
   withFooter = false,
@@ -76,7 +76,7 @@ export default function TableVirtualized<T extends object>({
   defaultSort,
   ...rest
 }: TableProps<T>) {
-  const [globalFilter, setGlobalFilter] = React.useState('');
+  const [globalFilter, setGlobalFilter] = React.useState("");
   const [sorting, setSorting] = React.useState<SortingState>(defaultSort ?? []);
 
   const [grandParentRef, { height: tableGrandParentHeight }] = useElementSize();
@@ -109,7 +109,7 @@ export default function TableVirtualized<T extends object>({
     getSortedRowModel: getSortedRowModel(),
     onExpandedChange: setExpanded,
     getExpandedRowModel: getExpandedRowModel(),
-    getSubRows: (row) => get(row, 'subRows', undefined),
+    getSubRows: (row) => get(row, "subRows", undefined),
   });
 
   const parentRef = React.useRef<HTMLDivElement | null>(null);
@@ -137,22 +137,22 @@ export default function TableVirtualized<T extends object>({
   }
 
   return (
-    <div className={clsxm('flex w-full flex-1 flex-col', className)} {...rest}>
+    <div className={clsxm("flex w-full flex-1 flex-col", className)} {...rest}>
       {withFilter && <Filter table={table} />}
       <div
         className={clsxm(
           // '-mx-4 -my-2 mt-2 sm:-mx-6 lg:-mx-8',
-          'flex w-full flex-1 flex-col py-2'
+          "flex w-full flex-1 flex-col py-2"
         )}
       >
         <div
-          className='flex w-full flex-1 flex-col p-0 align-middle'
+          className="flex w-full flex-1 flex-col p-0 align-middle"
           ref={grandParentRef}
-          test-id='table-grand-parent'
+          test-id="table-grand-parent"
         >
           <div
             className={clsxm(
-              'overflow-auto ring-1 ring-black ring-opacity-5 md:rounded-lg'
+              "overflow-auto ring-1 ring-black ring-opacity-5 md:rounded-lg"
               // 'dark:ring-gray-800'
             )}
             onScroll={handleScroll}
@@ -160,11 +160,11 @@ export default function TableVirtualized<T extends object>({
               height: tableParentHeight,
             }}
             ref={parentRef}
-            test-id='table-parent'
+            test-id="table-parent"
           >
             <table
               className={clsxm(
-                'min-w-full divide-y divide-gray-200 '
+                "min-w-full divide-y divide-gray-200 "
                 // 'dark:divide-gray-800'
               )}
             >

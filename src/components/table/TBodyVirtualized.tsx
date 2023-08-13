@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { flexRender, RowData, Table } from '@tanstack/react-table';
-import { Virtualizer } from '@tanstack/react-virtual';
-import clsx from 'clsx';
-import _ from 'lodash';
-import * as React from 'react';
+import { flexRender, RowData, Table } from "@tanstack/react-table";
+import { Virtualizer } from "@tanstack/react-virtual";
+import clsx from "clsx";
+import _ from "lodash";
+import * as React from "react";
 
-import clsxm from '@/lib/clsxm';
+import { cn as clsxm } from "@/lib/utils";
 
 type TBodyProps<T extends RowData> = {
   isLoading?: boolean;
@@ -15,7 +15,7 @@ type TBodyProps<T extends RowData> = {
   onRowClick?: (event: React.MouseEvent, index?: number | string) => void;
   isSelectedFn?: (index?: number | string) => boolean;
   isCanSelectedFn?: (index?: number | string) => boolean;
-} & React.ComponentPropsWithoutRef<'div'>;
+} & React.ComponentPropsWithoutRef<"div">;
 
 export default function TBody<T extends RowData>({
   className,
@@ -34,29 +34,29 @@ export default function TBody<T extends RowData>({
   return (
     <tbody
       className={clsxm(
-        'divide-y divide-gray-200 bg-white',
+        "divide-y divide-gray-200 bg-white",
         // 'dark:divide-gray-800',
         className
       )}
       style={{
         height: `${virtualizer.getTotalSize()}px`,
-        position: 'relative',
+        position: "relative",
       }}
       {...rest}
     >
       {isLoading && (
         <tr
           className={clsxm(
-            'flex',
-            'animate-pulse bg-gray-50',
-            'dark:bg-gray-800'
+            "flex",
+            "animate-pulse bg-gray-50",
+            "dark:bg-gray-800"
           )}
         >
           <td
             colSpan={table.getAllColumns().length}
             className={clsxm(
-              'whitespace-nowrap px-6 py-4 text-center text-xs text-gray-700',
-              'dark:text-gray-100'
+              "whitespace-nowrap px-6 py-4 text-center text-xs text-gray-700",
+              "dark:text-gray-100"
             )}
           >
             <span>Memuat data...</span>
@@ -64,12 +64,12 @@ export default function TBody<T extends RowData>({
         </tr>
       )}
       {rows.length === 0 && !isLoading ? (
-        <tr className={clsxm('flex', 'bg-gray-50', 'dark:bg-gray-800')}>
+        <tr className={clsxm("flex", "bg-gray-50", "dark:bg-gray-800")}>
           <td
             colSpan={table.getAllColumns().length}
             className={clsxm(
-              'whitespace-nowrap px-6 py-4 text-center text-xs text-gray-700',
-              'dark:text-gray-100'
+              "whitespace-nowrap px-6 py-4 text-center text-xs text-gray-700",
+              "dark:text-gray-100"
             )}
           >
             {bodyPlaceholder ? (
@@ -88,15 +88,15 @@ export default function TBody<T extends RowData>({
               data-index={virtualRow.index}
               ref={virtualizer.measureElement}
               className={clsxm(
-                'flex',
-                'absolute',
-                virtualRow.index % 2 === 0 ? 'bg-white' : 'bg-gray-50',
-                isSelectedFn && isSelectedFn(row.id) ? 'bg-gray-200' : '',
+                "flex",
+                "absolute",
+                virtualRow.index % 2 === 0 ? "bg-white" : "bg-gray-50",
+                isSelectedFn && isSelectedFn(row.id) ? "bg-gray-200" : "",
                 isCanSelectedFn !== undefined
                   ? isCanSelectedFn && isCanSelectedFn(row.id)
-                    ? 'cursor-pointer hover:bg-gray-100'
-                    : 'cursor-not-allowed bg-red-100'
-                  : ''
+                    ? "cursor-pointer hover:bg-gray-100"
+                    : "cursor-not-allowed bg-red-100"
+                  : ""
                 // virtualRow.index % 2 === 0
                 //   ? 'dark:bg-dark'
                 //   : 'dark:bg-gray-800'
@@ -111,31 +111,31 @@ export default function TBody<T extends RowData>({
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={`row:${row.id};cell:${cell.id};`}
-                  color='secondary'
+                  color="secondary"
                   className={clsx([
-                    'whitespace-nowrap',
-                    'truncate',
-                    'px-2 py-4 pl-[34px]',
-                    'text-xs text-gray-600',
+                    "whitespace-nowrap",
+                    "truncate",
+                    "px-2 py-4 pl-[34px]",
+                    "text-xs text-gray-600",
                     {
-                      'text-left':
-                        _.get(cell, 'column.columnDef.meta.align', 'left') ===
-                        'left',
-                      'text-center':
+                      "text-left":
+                        _.get(cell, "column.columnDef.meta.align", "left") ===
+                        "left",
+                      "text-center":
                         _.get(
                           cell,
-                          'column.columnDef.meta.align',
-                          '' as 'center'
-                        ) === 'center',
-                      'text-right':
+                          "column.columnDef.meta.align",
+                          "" as "center"
+                        ) === "center",
+                      "text-right":
                         _.get(
                           cell,
-                          'column.columnDef.meta.align',
-                          '' as 'right'
-                        ) === 'right',
+                          "column.columnDef.meta.align",
+                          "" as "right"
+                        ) === "right",
                     },
                   ])}
-                  title={(cell.getValue() ?? ('' as any)).toString() as string}
+                  title={(cell.getValue() ?? ("" as any)).toString() as string}
                   style={{
                     // width: cell.column.getSize(),
                     width:

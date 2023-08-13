@@ -1,11 +1,11 @@
-import clsx from 'clsx';
-import { get } from 'lodash';
-import React from 'react';
-import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
+import clsx from "clsx";
+import { get } from "lodash";
+import React from "react";
+import { Controller, RegisterOptions, useFormContext } from "react-hook-form";
 
-import clsxm from '@/lib/clsxm';
+import { cn as clsxm } from "@/lib/utils";
 
-import Typography from '@/components/elements/typography/Typography';
+import Typography from "@/components/Typography";
 
 export type TextAreaProps = {
   label?: React.ReactNode;
@@ -16,11 +16,11 @@ export type TextAreaProps = {
   hideError?: boolean;
   validation?: RegisterOptions;
   containerClassName?: string;
-} & React.ComponentPropsWithoutRef<'textarea'>;
+} & React.ComponentPropsWithoutRef<"textarea">;
 
 export default function TextArea({
   label,
-  placeholder = '',
+  placeholder = "",
   helperText,
   id,
   readOnly = false,
@@ -49,11 +49,11 @@ export default function TextArea({
   return (
     <div className={containerClassName}>
       {withLabel && (
-        <Typography as='label' variant='s3' className='block' htmlFor={id}>
+        <Typography as="label" variant="s3" className="block" htmlFor={id}>
           {label}
         </Typography>
       )}
-      <div className={clsx('relative', withLabel && 'mt-1')}>
+      <div className={clsx("relative", withLabel && "mt-1")}>
         <Controller
           control={control}
           name={id}
@@ -67,13 +67,13 @@ export default function TextArea({
               id={field.name}
               readOnly={readOnly}
               className={clsxm(
-                'flex w-full rounded-lg shadow-sm',
-                'min-h-[2.25rem] py-0 md:min-h-[2.5rem]',
-                'border-gray-300 focus:border-primary-500 focus:ring-primary-500',
+                "flex w-full rounded-lg shadow-sm",
+                "min-h-[2.25rem] py-0 md:min-h-[2.5rem]",
+                "focus:border-primary-500 focus:ring-primary-500 border-gray-300",
                 (readOnly || disabled) &&
-                  'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0',
+                  "cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0",
                 error &&
-                  'border-red-500 focus:border-red-500 focus:ring-red-500'
+                  "border-red-500 focus:border-red-500 focus:ring-red-500"
               )}
               placeholder={placeholder}
               aria-describedby={id}
@@ -88,12 +88,12 @@ export default function TextArea({
         />
       </div>
       {helperText && (
-        <Typography variant='c1' color='secondary' className='mt-1'>
+        <Typography variant="c1" color="secondary" className="mt-1">
           {helperText}
         </Typography>
       )}
       {!hideError && error && (
-        <Typography variant='c1' color='danger' className='mt-1'>
+        <Typography variant="c1" color="danger" className="mt-1">
           {error?.message?.toString()}
         </Typography>
       )}

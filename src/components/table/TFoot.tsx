@@ -1,12 +1,12 @@
-import { flexRender, RowData, Table } from '@tanstack/react-table';
-import _ from 'lodash';
-import * as React from 'react';
+import { flexRender, RowData, Table } from "@tanstack/react-table";
+import _ from "lodash";
+import * as React from "react";
 
-import clsxm from '@/lib/clsxm';
+import { cn as clsxm } from "@/lib/utils";
 
 type TFootProps<T extends RowData> = {
   table: Table<T>;
-} & React.ComponentPropsWithoutRef<'div'>;
+} & React.ComponentPropsWithoutRef<"div">;
 
 export default function TFoot<T extends RowData>({
   className,
@@ -16,21 +16,21 @@ export default function TFoot<T extends RowData>({
   return (
     <thead
       className={clsxm([
-        'border-b border-gray-200 dark:border-gray-800',
-        'bg-gray-50 dark:bg-gray-700',
+        "border-b border-gray-200 dark:border-gray-800",
+        "bg-gray-50 dark:bg-gray-700",
         className,
       ])}
       {...rest}
     >
       {table.getFooterGroups().map((footerGroup) => (
-        <tr key={footerGroup.id} className='flex'>
+        <tr key={footerGroup.id} className="flex">
           {footerGroup.headers.map((footer) => (
             <td
               key={footer.id}
-              scope='col'
+              scope="col"
               className={clsxm([
-                'group px-6 py-3 text-left text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-200',
-                'pl-[30px]',
+                "group px-6 py-3 text-left text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-200",
+                "pl-[30px]",
               ])}
               style={{
                 // width: cell.column.getSize(),
@@ -46,22 +46,22 @@ export default function TFoot<T extends RowData>({
             >
               {footer.isPlaceholder ? null : (
                 <div
-                  className={clsxm('relative flex items-center gap-2 py-1', {
-                    'justify-start':
-                      _.get(footer, 'column.columnDef.meta.align', 'left') ===
-                      'left',
-                    'justify-center':
+                  className={clsxm("relative flex items-center gap-2 py-1", {
+                    "justify-start":
+                      _.get(footer, "column.columnDef.meta.align", "left") ===
+                      "left",
+                    "justify-center":
                       _.get(
                         footer,
-                        'column.columnDef.meta.align',
-                        '' as 'center'
-                      ) === 'center',
-                    'justify-end':
+                        "column.columnDef.meta.align",
+                        "" as "center"
+                      ) === "center",
+                    "justify-end":
                       _.get(
                         footer,
-                        'column.columnDef.meta.align',
-                        '' as 'right'
-                      ) === 'right',
+                        "column.columnDef.meta.align",
+                        "" as "right"
+                      ) === "right",
                   })}
                 >
                   {flexRender(

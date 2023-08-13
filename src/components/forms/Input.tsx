@@ -1,12 +1,12 @@
-import clsx from 'clsx';
-import _ from 'lodash';
-import * as React from 'react';
-import { useEffect } from 'react';
-import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
-import { IconType } from 'react-icons';
-import { NumericFormat } from 'react-number-format';
+import clsx from "clsx";
+import _ from "lodash";
+import * as React from "react";
+import { useEffect } from "react";
+import { Controller, RegisterOptions, useFormContext } from "react-hook-form";
+import { IconType } from "react-icons";
+import { NumericFormat } from "react-number-format";
 
-import Typography from '@/components/elements/typography/Typography';
+import Typography from "@/components/Typography";
 export type InputProps = {
   /** Input label */
   label?: React.ReactNode;
@@ -33,13 +33,13 @@ export type InputProps = {
   leftIcon?: IconType | string;
   rightNode?: React.ReactNode;
   containerClassName?: string;
-} & React.ComponentPropsWithoutRef<'input'>;
+} & React.ComponentPropsWithoutRef<"input">;
 export default function Input({
   label,
-  placeholder = '',
+  placeholder = "",
   helperText,
   id,
-  type = 'text',
+  type = "text",
   disabled,
   readOnly = false,
   hideError = false,
@@ -62,8 +62,8 @@ export default function Input({
   const isNumber = !isNaN(parseInt(inputValue));
 
   useEffect(() => {
-    const numberInputId = document.getElementById('number' + id);
-    const textInputId = document.getElementById('text' + id);
+    const numberInputId = document.getElementById("number" + id);
+    const textInputId = document.getElementById("text" + id);
     if (isNumber && numberInputId) {
       numberInputId.focus();
     } else if (textInputId) {
@@ -74,17 +74,17 @@ export default function Input({
   return (
     <div className={containerClassName}>
       {withLabel && (
-        <Typography as='label' variant='s3' className='block' htmlFor={id}>
+        <Typography as="label" variant="s3" className="block" htmlFor={id}>
           {label}
         </Typography>
       )}
-      <div className={clsx('relative', withLabel && 'mt-1')}>
+      <div className={clsx("relative", withLabel && "mt-1")}>
         {LeftIcon && (
-          <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
-            {typeof LeftIcon === 'string' ? (
-              <Typography variant='s4'>{LeftIcon}</Typography>
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            {typeof LeftIcon === "string" ? (
+              <Typography variant="s4">{LeftIcon}</Typography>
             ) : (
-              <LeftIcon size='1em' className='text-xl text-typo' />
+              <LeftIcon size="1em" className="text-typo text-xl" />
             )}
           </div>
         )}
@@ -98,25 +98,25 @@ export default function Input({
                   onValueChange={(v) => field.onChange(v.value)}
                   value={field.value}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === "Enter") {
                       rest.onKeyDown?.(e);
                     }
                   }}
-                  id={'number' + id}
+                  id={"number" + id}
                   readOnly={readOnly}
-                  enterKeyHint='done'
+                  enterKeyHint="done"
                   disabled={disabled}
                   className={clsx(
-                    'flex w-full rounded-lg shadow-sm',
-                    'min-h-[2.25rem] py-0 md:min-h-[2.5rem]',
-                    'border-gray-300 focus:border-primary-500 focus:ring-primary-500',
+                    "flex w-full rounded-lg shadow-sm",
+                    "min-h-[2.25rem] py-0 md:min-h-[2.5rem]",
+                    "focus:border-primary-500 focus:ring-primary-500 border-gray-300",
                     (readOnly || disabled) &&
-                      'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0',
+                      "cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0",
                     error &&
-                      'border-red-500 focus:border-red-500 focus:ring-red-500',
-                    LeftIcon && 'pl-9',
-                    rightNode && 'pr-10',
-                    !isNumber && 'hidden'
+                      "border-red-500 focus:border-red-500 focus:ring-red-500",
+                    LeftIcon && "pl-9",
+                    rightNode && "pr-10",
+                    !isNumber && "hidden"
                   )}
                   placeholder={placeholder}
                   aria-describedby={id}
@@ -129,20 +129,20 @@ export default function Input({
                   {...rest}
                   name={id}
                   type={type}
-                  id={'text' + id}
+                  id={"text" + id}
                   readOnly={readOnly}
                   disabled={disabled}
                   className={clsx(
-                    'flex w-full rounded-lg shadow-sm',
-                    'min-h-[2.25rem] py-0 md:min-h-[2.5rem]',
-                    'border-gray-300 focus:border-primary-500 focus:ring-primary-500',
+                    "flex w-full rounded-lg shadow-sm",
+                    "min-h-[2.25rem] py-0 md:min-h-[2.5rem]",
+                    "focus:border-primary-500 focus:ring-primary-500 border-gray-300",
                     (readOnly || disabled) &&
-                      'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0',
+                      "cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0",
                     error &&
-                      'border-red-500 focus:border-red-500 focus:ring-red-500',
-                    LeftIcon && 'pl-9',
-                    rightNode && 'pr-10',
-                    isNumber && 'hidden'
+                      "border-red-500 focus:border-red-500 focus:ring-red-500",
+                    LeftIcon && "pl-9",
+                    rightNode && "pr-10",
+                    isNumber && "hidden"
                   )}
                   placeholder={placeholder}
                   aria-describedby={id}
@@ -157,18 +157,18 @@ export default function Input({
           control={control}
         />
         {rightNode && (
-          <div className='absolute inset-y-0 right-0 flex items-center pr-3'>
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3">
             {rightNode}
           </div>
         )}
       </div>
       {helperText && (
-        <Typography variant='c1' color='secondary' className='mt-1'>
+        <Typography variant="c1" color="secondary" className="mt-1">
           {helperText}
         </Typography>
       )}
       {!hideError && error && (
-        <Typography variant='c1' color='danger' className='mt-1'>
+        <Typography variant="c1" color="danger" className="mt-1">
           {error?.message?.toString()}
         </Typography>
       )}

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import * as React from 'react';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
 
-import clsxm from '@/lib/clsxm';
+import {cn as clsxm} from '@/lib/utils'
 
 type FilterProps<T extends RowData> = {
   table: Table<T>;
