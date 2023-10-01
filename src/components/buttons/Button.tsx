@@ -12,6 +12,14 @@ const ButtonVariant = [
   "light",
   "dark",
   "danger",
+  "nachos",
+  "crunchex",
+  "tomato",
+  "chaska",
+  "primary-nachos",
+  "primary-crunchex",
+  "primary-tomato",
+  "primary-chaska",
 ] as const;
 const ButtonSize = ["xs", "sm", "base"] as const;
 
@@ -26,6 +34,7 @@ type ButtonProps = {
     leftIcon?: string;
     rightIcon?: string;
   };
+  isActive?: boolean;
 } & React.ComponentPropsWithRef<"button">;
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -41,11 +50,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       leftIcon: LeftIcon,
       rightIcon: RightIcon,
       classNames,
+      isActive,
       ...rest
     },
     ref
   ) => {
     const disabled = isLoading || buttonDisabled;
+
+    const activated =
+      isActive &&
+      ["nachos", "crunchex", "tomato", "chaska"].find((val) => val === variant);
 
     return (
       <button
@@ -69,6 +83,64 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           //#endregion  //*======== Size ===========
           //#region  //*=========== Variants ===========
           [
+            variant === "nachos" && [
+              "bg-slate-100 text-slate-600",
+              "border border-slate-600",
+              "hover:border-amber-500 hover:bg-white hover:text-amber-500",
+              "active:border-amber-500 active:bg-white",
+              "border-slate-400 disabled:bg-slate-300 disabled:text-slate-500",
+            ],
+            variant === "crunchex" && [
+              "bg-slate-100 text-slate-600",
+              "border border-slate-600",
+              "hover:border-sky-500 hover:bg-white hover:text-sky-500",
+              "active:border-sky-500 active:bg-white",
+              "border-slate-400 disabled:bg-slate-300 disabled:text-slate-500",
+            ],
+            variant === "tomato" && [
+              "bg-slate-100 text-slate-600",
+              "border border-slate-600",
+              "hover:border-red-500 hover:bg-white hover:text-red-500",
+              "active:border-red-500 active:bg-white",
+              "border-slate-400 disabled:bg-slate-300 disabled:text-slate-500",
+            ],
+            variant === "chaska" && [
+              "bg-slate-100 text-slate-600",
+              "border border-slate-600",
+              "hover:border-emerald-500 hover:bg-white hover:text-emerald-500",
+              "active:border-emerald-500 active:bg-white",
+              "border-slate-400 disabled:bg-slate-300 disabled:text-slate-500",
+            ],
+
+            variant === "primary-nachos" && [
+              "bg-amber-500 text-white",
+              "border border-amber-600",
+              "hover:bg-amber-600 hover:text-white",
+              "active:bg-amber-700",
+              "disabled:bg-amber-700",
+            ],
+            variant === "primary-crunchex" && [
+              "bg-sky-500 text-white",
+              "border border-sky-600",
+              "hover:bg-sky-600 hover:text-white",
+              "active:bg-sky-700",
+              "disabled:bg-sky-700",
+            ],
+            variant === "primary-tomato" && [
+              "bg-red-500 text-white",
+              "border border-red-600",
+              "hover:bg-red-600 hover:text-white",
+              "active:bg-red-700",
+              "disabled:bg-red-700",
+            ],
+            variant === "primary-chaska" && [
+              "bg-emerald-500 text-white",
+              "border border-emerald-600",
+              "hover:bg-emerald-600 hover:text-white",
+              "active:bg-emerald-700",
+              "disabled:bg-emerald-700",
+            ],
+
             variant === "danger" && [
               "bg-red-500 text-white",
               "border border-red-600",
@@ -109,6 +181,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               "hover:bg-gray-800 active:bg-gray-700 disabled:bg-gray-700",
             ],
           ],
+          activated === "nachos" && "border-amber-500 bg-white text-amber-500",
+          activated === "crunchex" && "border-sky-500 bg-white text-sky-500",
+          activated === "tomato" && "border-red-500 bg-white text-red-500",
+          activated === "chaska" &&
+            "border-emerald-500 bg-white text-emerald-500",
           //#endregion  //*======== Variants ===========
           "disabled:cursor-not-allowed",
           isLoading &&

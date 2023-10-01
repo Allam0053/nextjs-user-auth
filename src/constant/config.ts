@@ -1,6 +1,6 @@
 export const siteConfig = {
-  title: "Nextjs Auth",
-  description: "Auth and User list",
+  title: "Balaji",
+  description: "Flamin Hot Nachos",
   /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
   url: "https://unbreakable-auth.vercel.app",
 };

@@ -34,3 +34,28 @@ export function DateFormatter(inputDate: string) {
       : '';
   return outputDate;
 }
+export function extractDigitsFromString(inputString: string): string {
+  const digitRegex = /\d/g;
+  const digitsArray = inputString.match(digitRegex);
+
+  if (digitsArray) {
+    return digitsArray.join('');
+  } else {
+    return '';
+  }
+}
+
+// const inputString = "abc123def456";
+// const digits = extractDigitsFromString(inputString);
+// console.log(digits); // Output: "123456"
+
+export function isContainsNonDigitCharacters(inputString: string): boolean {
+  const pattern = /[^0-9]/;
+  return pattern.test(inputString);
+}
+
+export function isStringConvertableToNumber(inputString: string) {
+  return isContainsNonDigitCharacters(inputString)
+    ? false
+    : !isNaN(parseInt(inputString));
+}

@@ -9,6 +9,10 @@ import { useAuth } from "@/hooks/useAuth";
 import Button from "@/components/buttons/Button";
 import { ImInfo } from "react-icons/im";
 import UserInfoModal from "@/components/layout/LoggedInUserDetailModal";
+import NextImage from "@/components/NextImage";
+
+import BalajiBrandImage from "public/images/balaji_brand.png";
+import { useWindowSize } from "usehooks-ts";
 
 export type IndexNavbarProps = {
   transparent?: boolean;
@@ -31,11 +35,12 @@ export default function Navbar({
       setFadeInStart(true);
     }, 500);
   }, []);
+  const windowSize = useWindowSize();
   return (
     <>
       <nav
         className={clsxm(
-          "navbar-expand-lg fixed top-0 z-50 flex w-full flex-wrap items-center justify-between px-2 py-3 shadow",
+          "navbar-expand-lg fixed top-0 z-50 flex w-full flex-wrap items-center justify-between px-2 py-3 shadow md:shadow-none",
           transparent ? "bg-white bg-opacity-10 backdrop-blur-lg" : "bg-white",
           fadeInStart ? "fade-in-start" : "",
           className
@@ -51,7 +56,14 @@ export default function Navbar({
               href="/"
               className="mr-4 inline-block whitespace-nowrap rounded-md bg-white px-2 py-1 text-sm font-bold uppercase leading-relaxed text-slate-700 "
             >
-              Nextjs Auth
+              <NextImage
+                useSkeleton
+                src={BalajiBrandImage.src}
+                className="w-[42px] lg:w-[167px]"
+                width={windowSize.width <= 768 ? 42 : 84}
+                height={windowSize.width <= 768 ? 32 : 64}
+                alt="Balaji"
+              />
             </Link>
             <button
               className="block cursor-pointer rounded border border-solid border-transparent bg-transparent bg-white px-3 py-1 text-xl leading-none outline-none focus:outline-none lg:hidden"

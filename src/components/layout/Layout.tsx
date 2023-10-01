@@ -24,7 +24,7 @@ export default function Layout({
     <>
       <main className={cn("flex w-full flex-col", isHScreen && "h-screen")}>
         <div className="flex h-16 w-full">
-          <LayoutNavbar />
+          <LayoutNavbar transparent />
         </div>
         {children}
       </main>
@@ -57,10 +57,11 @@ export const LayoutWithRef = React.forwardRef<
 export const Section = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithRef<"section">
->(({ children, className }, forwardRef) => (
+>(({ children, className, ...rest }, forwardRef) => (
   <section
-    className={cn("relative flex h-full w-full px-4 pb-14 pt-2", className)}
+    className={cn("relative flex w-full px-4 py-2", className)}
     ref={forwardRef}
+    {...rest}
   >
     {children}
   </section>

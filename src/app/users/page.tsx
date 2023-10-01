@@ -7,12 +7,10 @@ import TanStackReactQueryProveider from "@/components/providers/ReactQuery";
 
 export default function Page() {
   return (
-    <TanStackReactQueryProveider>
-      <Layout isHScreen>
-        <Section className="flex-1">
-          <ClientComponent />
-        </Section>
-      </Layout>
-    </TanStackReactQueryProveider>
+    <Layout isHScreen>
+      <Section className="flex-1">
+        <ClientComponent />
+      </Section>
+    </Layout>
   );
 }
