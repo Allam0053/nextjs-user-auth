@@ -133,7 +133,14 @@ export default function Page() {
 
   return (
     <Layout isHScreen>
-      <Toaster />
+      <Toaster
+        containerStyle={{
+          top: 84,
+          left: 20,
+          bottom: 20,
+          right: 20,
+        }}
+      />
       <div className="h-[48px] w-full lg:h-[60px]" />
       <Section
         className={cn(
