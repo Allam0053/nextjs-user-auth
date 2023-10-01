@@ -28,8 +28,8 @@ type ButtonProps = {
   isDarkBg?: boolean;
   variant?: (typeof ButtonVariant)[number];
   size?: (typeof ButtonSize)[number];
-  leftIcon?: IconType | LucideIcon;
-  rightIcon?: IconType | LucideIcon;
+  leftIcon?: IconType | LucideIcon | string;
+  rightIcon?: IconType | LucideIcon | string;
   classNames?: {
     leftIcon?: string;
     rightIcon?: string;
@@ -216,17 +216,21 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               size === "xs" && "mr-1",
             ])}
           >
-            <LeftIcon
-              size="1em"
-              className={cn(
-                [
-                  size === "base" && "md:text-md text-md",
-                  size === "sm" && "md:text-md text-sm",
-                  size === "xs" && "text-xs md:text-xs",
-                ],
-                classNames?.leftIcon
-              )}
-            />
+            {typeof LeftIcon === "function" ? (
+              <LeftIcon
+                size="1em"
+                className={cn(
+                  [
+                    size === "base" && "md:text-md text-md",
+                    size === "sm" && "md:text-md text-sm",
+                    size === "xs" && "text-xs md:text-xs",
+                  ],
+                  classNames?.leftIcon
+                )}
+              />
+            ) : (
+              LeftIcon
+            )}
           </div>
         )}
         {children}
@@ -237,16 +241,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               size === "sm" && "ml-1.5",
             ])}
           >
-            <RightIcon
-              size="1em"
-              className={cn(
-                [
-                  size === "base" && "text-md md:text-md",
-                  size === "sm" && "md:text-md text-sm",
-                ],
-                classNames?.rightIcon
-              )}
-            />
+            {typeof RightIcon === "function" ? (
+              <RightIcon
+                size="1em"
+                className={cn(
+                  [
+                    size === "base" && "text-md md:text-md",
+                    size === "sm" && "md:text-md text-sm",
+                  ],
+                  classNames?.rightIcon
+                )}
+              />
+            ) : (
+              RightIcon
+            )}
           </div>
         )}
       </button>

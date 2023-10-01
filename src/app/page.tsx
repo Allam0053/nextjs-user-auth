@@ -10,6 +10,8 @@ import Typography from "@/components/Typography";
 type Variant = "nachos" | "crunchex" | "tomato" | "chaska";
 
 const qtyId = wording.form.QTY.toLowerCase();
+const selectedVariantAtom = atom<Variant>("nachos");
+export const useSelectedVariant = () => useAtom(selectedVariantAtom);
 
 export default function Page() {
   const windowSize = useWindowSize();
@@ -18,8 +20,7 @@ export default function Page() {
   });
   const qtyWatch = methods.watch(qtyId);
 
-  const [selectedVariant, setSelectedVariant] =
-    React.useState<Variant>("nachos");
+  const [selectedVariant, setSelectedVariant] = useSelectedVariant();
   const selectNachosFn = React.useCallback(
     () => setSelectedVariant("nachos"),
     []
@@ -65,21 +66,35 @@ export default function Page() {
 
   return (
     <Layout isHScreen>
-      <Section className="w-full flex-col" id="main">
+      <Section className={cn("w-full flex-col", "md:w-[75vw]")} id="main">
         <div className="h-[48px] w-full" />
         <Typography variant="h1" className="text-center">
-          {wording.nachos.TITLE}
+          {wording[selectedVariant].TITLE}
         </Typography>
         <Typography variant="c2" className="text-center">
-          {wording.nachos.DESCRIPTION}
+          {wording[selectedVariant].DESCRIPTION}
         </Typography>
         <div className="h-8" />
         <div className="relative flex w-full justify-center">
-          <NachosImageComponent windowSize={windowSize} />
+          {selectedVariant === "crunchex" ? (
+            <CrunchexImageComponent windowSize={windowSize} />
+          ) : selectedVariant === "tomato" ? (
+            <TomatoImageComponent windowSize={windowSize} />
+          ) : selectedVariant === "chaska" ? (
+            <ChaskaImageComponent windowSize={windowSize} />
+          ) : (
+            <NachosImageComponent windowSize={windowSize} />
+          )}
         </div>
         <div className="h-8" />
       </Section>
-      <Section className="w-full flex-1 flex-col rounded-t-lg bg-white">
+      <Section
+        className={cn(
+          "w-full flex-1 flex-col rounded-t-lg bg-white",
+          "md:w-[75vw]"
+        )}
+        id="cart-addition"
+      >
         <form className="w-full">
           <div className="w-full">
             <Typography
@@ -162,8 +177,9 @@ export default function Page() {
           </div>
           <div className="h-4" />
           <Button
-            className="w-full justify-center"
+            className="w-full justify-between"
             leftIcon={BsCartPlus}
+            rightIcon={" "}
             variant={`primary-${selectedVariant}` as const}
           >
             {wording.form.SUBMIT}
@@ -176,6 +192,12 @@ export default function Page() {
 
 import NachosPhoneImage from "public/images/item/phone/1.png";
 import NachosBigImage from "public/images/item/other/1.png";
+import CrunchexPhoneImage from "public/images/item/phone/2.png";
+import CrunchexBigImage from "public/images/item/other/2.png";
+import TomatoPhoneImage from "public/images/item/phone/3.png";
+import TomatoBigImage from "public/images/item/other/3.png";
+import ChaskaPhoneImage from "public/images/item/phone/4.png";
+import ChaskaBigImage from "public/images/item/other/4.png";
 import { WindowSize } from "@/types/window";
 import wording from "@/constant/wording";
 import Button from "@/components/buttons/Button";
@@ -184,16 +206,57 @@ import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { FormProvider, useForm } from "react-hook-form";
 import { get } from "lodash";
 import { BsCartPlus } from "react-icons/bs";
-type NachosImageComponentProps = {
+import { StaticImageData } from "next/image";
+import { cn } from "@/lib/utils";
+import { atom, useAtom } from "jotai";
+type ImageComponentProps = {
   windowSize: WindowSize;
+  bigImage: StaticImageData;
+  phoneImage: StaticImageData;
 };
 
-function NachosImageComponent({ windowSize }: NachosImageComponentProps) {
+function NachosImageComponent({ ...rest }: { windowSize: WindowSize }) {
+  return ImageComponent({
+    bigImage: NachosBigImage,
+    phoneImage: NachosPhoneImage,
+    ...rest,
+  });
+}
+
+function CrunchexImageComponent({ ...rest }: { windowSize: WindowSize }) {
+  return ImageComponent({
+    bigImage: CrunchexBigImage,
+    phoneImage: CrunchexPhoneImage,
+    ...rest,
+  });
+}
+
+function TomatoImageComponent({ ...rest }: { windowSize: WindowSize }) {
+  return ImageComponent({
+    bigImage: TomatoBigImage,
+    phoneImage: TomatoPhoneImage,
+    ...rest,
+  });
+}
+
+function ChaskaImageComponent({ ...rest }: { windowSize: WindowSize }) {
+  return ImageComponent({
+    bigImage: ChaskaBigImage,
+    phoneImage: ChaskaPhoneImage,
+    ...rest,
+  });
+}
+
+function ImageComponent({
+  windowSize,
+  bigImage,
+  phoneImage,
+}: ImageComponentProps) {
   const imageSource = React.useMemo(() => {
     if (windowSize.width >= 768) {
-      return NachosBigImage;
+      return bigImage;
     }
-    return NachosPhoneImage;
+    return phoneImage;
   }, [windowSize.width]);
   const imageSize = React.useMemo(() => {
     if (windowSize.width >= 768) {

@@ -22,7 +22,13 @@ export default function Layout({
   // Put Header or Footer Here
   return (
     <>
-      <main className={cn("flex w-full flex-col", isHScreen && "h-screen")}>
+      <main
+        className={cn(
+          "flex w-full flex-col",
+          isHScreen && "h-screen",
+          "md:items-center"
+        )}
+      >
         <div className="flex h-16 w-full">
           <LayoutNavbar transparent />
         </div>

@@ -13,6 +13,10 @@ import NextImage from "@/components/NextImage";
 
 import BalajiBrandImage from "public/images/balaji_brand.png";
 import { useWindowSize } from "usehooks-ts";
+import useSearchBar from "@/hooks/useSearchBar/master";
+import IconButton from "@/components/buttons/IconButton";
+import { HiBars3 } from "react-icons/hi2";
+import { useSelectedVariant } from "@/app/page";
 
 export type IndexNavbarProps = {
   transparent?: boolean;
@@ -36,25 +40,27 @@ export default function Navbar({
     }, 500);
   }, []);
   const windowSize = useWindowSize();
+  const searchBar = useSearchBar();
+  const [selectedVariant] = useSelectedVariant();
   return (
     <>
       <nav
         className={clsxm(
-          "navbar-expand-lg fixed top-0 z-50 flex w-full flex-wrap items-center justify-between px-2 py-3 shadow md:shadow-none",
+          "navbar-expand-lg fixed top-0 z-50 flex w-full flex-wrap items-center justify-between px-2 py-3 shadow md:gap-2 md:px-0 md:shadow-none",
           transparent ? "bg-white bg-opacity-10 backdrop-blur-lg" : "bg-white",
           fadeInStart ? "fade-in-start" : "",
           className
         )}
         {...rest}
       >
-        <div className="container mx-auto flex flex-wrap items-center justify-between px-4">
+        <div className="container mx-auto flex flex-wrap items-center justify-between px-4 md:w-[75vw]">
           <div
             className="relative flex w-full justify-between lg:static lg:block lg:w-auto lg:justify-start"
             data-fade="3"
           >
             <Link
               href="/"
-              className="mr-4 inline-block whitespace-nowrap rounded-md bg-white px-2 py-1 text-sm font-bold uppercase leading-relaxed text-slate-700 "
+              className="mr-4 inline-block whitespace-nowrap rounded-md px-2 py-1 text-sm font-bold uppercase leading-relaxed"
             >
               <NextImage
                 useSkeleton
@@ -65,15 +71,16 @@ export default function Navbar({
                 alt="Balaji"
               />
             </Link>
-            <button
-              className="block cursor-pointer rounded border border-solid border-transparent bg-transparent bg-white px-3 py-1 text-xl leading-none outline-none focus:outline-none lg:hidden"
-              type="button"
+            <div>
+              <searchBar.SearchBarComponent />
+            </div>
+            <IconButton
+              icon={HiBars3}
               onClick={() => setNavbarOpen(!navbarOpen)}
-            >
-              <i className="fas fa-bars"></i>
-            </button>
+              className="h-fit"
+              variant={`primary-${selectedVariant}` as const}
+            />
           </div>
-          {token && <UserInfoModal />}
           <div
             className={clsxm(
               "flex-grow items-center rounded bg-white md:rounded-none lg:flex lg:bg-opacity-0 lg:shadow-none",
