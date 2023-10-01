@@ -150,7 +150,7 @@ export default function Input({
                     disabled={disabled}
                     className={clsx(
                       "placeholder:capitalize",
-                      "flex w-full rounded-lg shadow-sm",
+                      "flex w-full shadow-sm",
                       "min-h-[2.25rem] py-0 md:min-h-[2.5rem]",
                       "focus:border-primary-500 focus:ring-primary-500 border-gray-300",
                       (readOnly || disabled) &&
@@ -161,6 +161,7 @@ export default function Input({
                       leftNode && "pl-9",
                       rightNode && "pr-10",
                       !isNumber && "hidden",
+                      !className?.includes("rounded") && "rounded-lg",
                       className
                     )}
                     placeholder={placeholder}

@@ -1,46 +1,47 @@
-import * as React from 'react';
+import * as React from "react";
 
-import {cn as clsxm} from '@/lib/utils';
+import { cn as clsxm } from "@/lib/utils";
 
 const TypographyVariant = [
-  'j1',
-  'j2',
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  's1',
-  's2',
-  's3',
-  's4',
-  'b1',
-  'b2',
-  'b3',
-  'c1',
-  'c2',
-  'l1',
-  'l2',
+  "xj3",
+  "j1",
+  "j2",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "s1",
+  "s2",
+  "s3",
+  "s4",
+  "b1",
+  "b2",
+  "b3",
+  "c1",
+  "c2",
+  "l1",
+  "l2",
 ] as const;
 
 export const SeverityColor = [
-  'success',
-  'info',
-  'warning',
-  'error',
-  'white',
+  "success",
+  "info",
+  "warning",
+  "error",
+  "white",
 ] as const;
 
 export const TypographyColor = [
-  'primary',
-  'secondary',
-  'tertiary',
-  'danger',
+  "primary",
+  "secondary",
+  "tertiary",
+  "danger",
   ...SeverityColor,
 ] as const;
 
-const TypographyFont = ['averta', 'inter'] as const;
+const TypographyFont = ["averta", "inter"] as const;
 
 type TypographyProps<T extends React.ElementType> = {
   /** @default <p> tag */
@@ -74,66 +75,69 @@ type TypographyProps<T extends React.ElementType> = {
 } & React.ComponentPropsWithoutRef<T>;
 
 /** @see https://www.benmvp.com/blog/forwarding-refs-polymorphic-react-component-typescript/ */
-type TypographyComponent = <T extends React.ElementType = 'p'>(
+type TypographyComponent = <T extends React.ElementType = "p">(
   props: TypographyProps<T>
 ) => React.ReactElement | null;
 
-export const Typography: TypographyComponent = (React.forwardRef(
-  <T extends React.ElementType = 'p'>(
+export const Typography: TypographyComponent = React.forwardRef(
+  <T extends React.ElementType = "p">(
     {
       as,
       children,
       className,
-      color = 'primary',
-      variant = 'b2',
+      color = "primary",
+      variant = "b2",
       font,
       ...rest
     }: TypographyProps<T>,
-    ref?: React.ComponentPropsWithRef<T>['ref']
+    ref?: React.ComponentPropsWithRef<T>["ref"]
   ) => {
-    const Component = as || 'p';
+    const Component = as || "p";
     return (
       <Component
         ref={ref}
         className={clsxm(
           //#region  //*=========== Variants ===========
           [
-            variant === 'j1' && ['font-averta text-4xl font-bold'],
-            variant === 'j2' && ['font-averta text-3xl font-bold'],
-            variant === 'h1' && ['font-averta text-2xl font-semibold'],
-            variant === 'h2' && ['font-averta text-xl font-semibold'],
-            variant === 'h3' && ['font-averta text-lg font-semibold'],
-            variant === 'h4' && ['font-averta text-base font-bold'],
-            variant === 'h5' && ['font-averta text-base font-semibold'],
-            variant === 'h6' && ['font-averta text-sm font-semibold'],
-            variant === 's1' && ['text-lg font-medium'],
-            variant === 's2' && ['text-base font-medium'],
-            variant === 's3' && ['text-sm font-medium'],
-            variant === 's4' && ['text-xs font-medium'],
-            variant === 'b1' && ['text-lg'],
-            variant === 'b2' && ['font-primary text-base'],
-            variant === 'b3' && ['text-sm font-normal'],
-            variant === 'c1' && ['text-xs'],
-            variant === 'c2' && ['text-[11px] leading-[14px]'],
+            variant === "xj3" && [
+              "font-averta text-[48px] font-bold leading-[54px]",
+            ],
+            variant === "j1" && ["font-averta text-4xl font-bold"],
+            variant === "j2" && ["font-averta text-3xl font-bold"],
+            variant === "h1" && ["font-averta text-2xl font-semibold"],
+            variant === "h2" && ["font-averta text-xl font-semibold"],
+            variant === "h3" && ["font-averta text-lg font-semibold"],
+            variant === "h4" && ["font-averta text-base font-bold"],
+            variant === "h5" && ["font-averta text-base font-semibold"],
+            variant === "h6" && ["font-averta text-sm font-semibold"],
+            variant === "s1" && ["text-lg font-medium"],
+            variant === "s2" && ["text-base font-medium"],
+            variant === "s3" && ["text-sm font-medium"],
+            variant === "s4" && ["text-xs font-medium"],
+            variant === "b1" && ["text-lg"],
+            variant === "b2" && ["font-primary text-base"],
+            variant === "b3" && ["text-sm font-normal"],
+            variant === "c1" && ["text-xs"],
+            variant === "c2" && ["text-[11px] leading-[14px]"],
           ],
           //#endregion  //*======== Variants ===========
           //#region  //*=========== Color ===========
           [
-            color === 'primary' && ['text-black'],
-            color === 'secondary' && ['text-gray-700'],
-            color === 'tertiary' && ['text-gray-500'],
-            color === 'danger' && ['text-red-500'],
-            color === 'white' && ['text-white'],
-            color === 'success' && ['text-green-500'],
-            color === 'info' && ['text-blue-500'],
-            color === 'warning' && ['text-yellow-500'],
-            color === 'error' && ['text-red-500'],
+            color === "primary" && ["text-black"],
+            color === "secondary" && ["text-gray-700"],
+            color === "tertiary" && ["text-gray-500"],
+            color === "danger" && ["text-red-500"],
+            color === "white" && ["text-white"],
+            color === "success" && ["text-green-500"],
+            color === "info" && ["text-blue-500"],
+            color === "warning" && ["text-yellow-500"],
+            color === "error" && ["text-red-500"],
           ],
           //#endregion  //*======== Color ===========
           //#region  //*=========== Font ===========
           [
-            font === 'averta' && ['font-averta'],
-            font === 'inter' && ['font-primary'],
+            font === "averta" && ["font-averta"],
+            font === "inter" && ["font-primary"],
           ],
           //#endregion  //*======== Font ===========
           className
@@ -144,6 +148,6 @@ export const Typography: TypographyComponent = (React.forwardRef(
       </Component>
     );
   }
-) as TypographyComponent);
+) as TypographyComponent;
 
 export default Typography;

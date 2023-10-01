@@ -11,6 +11,10 @@ const IconButtonVariant = [
   "ghost",
   "light",
   "dark",
+  "nachos",
+  "crunchex",
+  "tomato",
+  "chaska",
   "primary-nachos",
   "primary-crunchex",
   "primary-tomato",
@@ -25,6 +29,7 @@ type IconButtonProps = {
   classNames?: {
     icon?: string;
   };
+  isActive?: boolean;
 } & React.ComponentPropsWithRef<"button">;
 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
@@ -37,12 +42,25 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       isDarkBg = false,
       icon: Icon,
       classNames,
+      isActive,
       ...rest
     },
     ref
   ) => {
     const disabled = isLoading || buttonDisabled;
 
+    const activated =
+      isActive &&
+      [
+        "nachos",
+        "crunchex",
+        "tomato",
+        "chaska",
+        "primary-nachos",
+        "primary-crunchex",
+        "primary-tomato",
+        "primary-chaska",
+      ].find((val) => val === variant);
     return (
       <button
         ref={ref}
@@ -56,6 +74,34 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           "min-h-[28px] min-w-[28px] p-1 md:min-h-[34px] md:min-w-[34px] md:p-2",
           //#region  //*=========== Variants ===========
           [
+            variant === "nachos" && [
+              "bg-slate-100 text-slate-600",
+              "border border-slate-600",
+              "hover:border-amber-500 hover:bg-white hover:text-amber-500",
+              "active:border-amber-500 active:bg-white",
+              "border-slate-400 disabled:bg-slate-300 disabled:text-slate-500",
+            ],
+            variant === "crunchex" && [
+              "bg-slate-100 text-slate-600",
+              "border border-slate-600",
+              "hover:border-sky-500 hover:bg-white hover:text-sky-500",
+              "active:border-sky-500 active:bg-white",
+              "border-slate-400 disabled:bg-slate-300 disabled:text-slate-500",
+            ],
+            variant === "tomato" && [
+              "bg-slate-100 text-slate-600",
+              "border border-slate-600",
+              "hover:border-red-500 hover:bg-white hover:text-red-500",
+              "active:border-red-500 active:bg-white",
+              "border-slate-400 disabled:bg-slate-300 disabled:text-slate-500",
+            ],
+            variant === "chaska" && [
+              "bg-slate-100 text-slate-600",
+              "border border-slate-600",
+              "hover:border-emerald-500 hover:bg-white hover:text-emerald-500",
+              "active:border-emerald-500 active:bg-white",
+              "border-slate-400 disabled:bg-slate-300 disabled:text-slate-500",
+            ],
             variant === "primary-nachos" && [
               "bg-amber-500 text-white",
               "border border-amber-600",
@@ -118,6 +164,20 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
               "hover:bg-gray-800 active:bg-gray-700 disabled:bg-gray-700",
             ],
           ],
+
+          activated === "nachos" && "border-amber-500 bg-white text-amber-500",
+          activated === "crunchex" && "border-sky-500 bg-white text-sky-500",
+          activated === "tomato" && "border-red-500 bg-white text-red-500",
+          activated === "chaska" &&
+            "border-emerald-500 bg-white text-emerald-500",
+          activated === "primary-nachos" &&
+            "border-amber-700 bg-white text-amber-700",
+          activated === "primary-crunchex" &&
+            "border-sky-700 bg-white text-sky-700",
+          activated === "primary-tomato" &&
+            "border-red-700 bg-white text-red-700",
+          activated === "primary-chaska" &&
+            "border-emerald-700 bg-white text-emerald-700",
           //#endregion  //*======== Variants ===========
           "disabled:cursor-not-allowed",
           isLoading &&

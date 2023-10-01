@@ -30,7 +30,7 @@ export default function Layout({
         )}
       >
         <div className="flex h-16 w-full">
-          <LayoutNavbar transparent />
+          <LayoutNavbar />
         </div>
         {children}
       </main>

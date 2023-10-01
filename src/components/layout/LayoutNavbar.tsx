@@ -16,7 +16,10 @@ import { useWindowSize } from "usehooks-ts";
 import useSearchBar from "@/hooks/useSearchBar/master";
 import IconButton from "@/components/buttons/IconButton";
 import { HiBars3 } from "react-icons/hi2";
-import { useSelectedVariant } from "@/app/page";
+import { selectedVariantAtom } from "@/app/page";
+
+import { HiOutlineSearch, HiOutlineXCircle } from "react-icons/hi";
+import { useAtom } from "jotai";
 
 export type IndexNavbarProps = {
   transparent?: boolean;
@@ -34,60 +37,74 @@ export default function Navbar({
   const { token } = useAuth();
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   const [fadeInStart, setFadeInStart] = React.useState(false);
+  const [searchOpen, setSearchOpen] = React.useState(false);
   React.useEffect(() => {
     setTimeout(() => {
       setFadeInStart(true);
     }, 500);
   }, []);
   const windowSize = useWindowSize();
-  const searchBar = useSearchBar();
-  const [selectedVariant] = useSelectedVariant();
+  const searchBar = useSearchBar(
+    "Cari sesuatu...",
+    {
+      isText: true,
+      id: "search",
+    },
+    ""
+  );
+  const [selectedVariant] = useAtom(selectedVariantAtom);
   return (
     <>
       <nav
         className={clsxm(
           "navbar-expand-lg fixed top-0 z-50 flex w-full flex-wrap items-center justify-between px-2 py-3 shadow md:gap-2 md:px-0 md:shadow-none",
-          transparent ? "bg-white bg-opacity-10 backdrop-blur-lg" : "bg-white",
+          "lg:bg-transparent lg:bg-opacity-100 lg:backdrop-blur-none",
+          "bg-white bg-opacity-10 backdrop-blur-lg",
           fadeInStart ? "fade-in-start" : "",
           className
         )}
         {...rest}
       >
-        <div className="container mx-auto flex flex-wrap items-center justify-between px-4 md:w-[75vw]">
+        <div className="mx-auto flex w-full flex-wrap items-center justify-between px-4 md:w-[75vw]">
           <div
-            className="relative flex w-full justify-between lg:static lg:block lg:w-auto lg:justify-start"
+            className="relative flex w-full items-center justify-between lg:static lg:w-auto"
             data-fade="3"
           >
-            <Link
-              href="/"
-              className="mr-4 inline-block whitespace-nowrap rounded-md px-2 py-1 text-sm font-bold uppercase leading-relaxed"
-            >
+            <Link href="/" className="flex">
               <NextImage
                 useSkeleton
                 src={BalajiBrandImage.src}
-                className="w-[42px] lg:w-[167px]"
                 width={windowSize.width <= 768 ? 42 : 84}
                 height={windowSize.width <= 768 ? 32 : 64}
                 alt="Balaji"
               />
             </Link>
-            <div>
-              <searchBar.SearchBarComponent />
+            <div className="flex w-fit gap-2">
+              <IconButton
+                icon={HiOutlineSearch}
+                onClick={() => setSearchOpen((prev) => !prev)}
+                className="h-fit lg:hidden"
+                variant={selectedVariant}
+                isActive={searchOpen}
+              />
+              <IconButton
+                icon={HiBars3}
+                onClick={() => setNavbarOpen(!navbarOpen)}
+                className="h-fit lg:hidden"
+                variant={`primary-${selectedVariant}` as const}
+                isActive={navbarOpen}
+              />
             </div>
-            <IconButton
-              icon={HiBars3}
-              onClick={() => setNavbarOpen(!navbarOpen)}
-              className="h-fit"
-              variant={`primary-${selectedVariant}` as const}
-            />
           </div>
+
           <div
             className={clsxm(
-              "flex-grow items-center rounded bg-white md:rounded-none lg:flex lg:bg-opacity-0 lg:shadow-none",
-              navbarOpen ? " block" : " hidden"
+              "flex-grow items-center rounded md:rounded-none lg:flex lg:flex-grow-0 lg:bg-opacity-0 lg:shadow-none",
+              navbarOpen ? "block" : " hidden"
             )}
             id="example-navbar-warning"
           >
+            <div className="h-2" />
             <ul className="flex list-none flex-col gap-2 rounded-md bg-white lg:ml-auto lg:flex-row">
               <li className="flex items-center" data-fade="6">
                 <a
@@ -128,6 +145,18 @@ export default function Navbar({
                 </a>
               </li>
             </ul>
+            <div className="h-2" />
+          </div>
+
+          <div
+            className={clsxm(
+              "flex-grow items-center rounded md:rounded-none lg:flex lg:max-w-[240px] lg:bg-opacity-0 lg:shadow-none",
+              searchOpen ? " block" : " hidden"
+            )}
+          >
+            <div className="h-2" />
+            <searchBar.SearchBarComponent />
+            <div className="h-2" />
           </div>
         </div>
       </nav>

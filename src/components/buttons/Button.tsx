@@ -23,6 +23,14 @@ const ButtonVariant = [
 ] as const;
 const ButtonSize = ["xs", "sm", "base"] as const;
 
+type RenderProps = {
+  disabled?: boolean;
+  isLoading?: boolean;
+  variant?: (typeof ButtonVariant)[number];
+  size?: (typeof ButtonSize)[number];
+  isDarkBg?: boolean;
+};
+
 type ButtonProps = {
   isLoading?: boolean;
   isDarkBg?: boolean;
@@ -30,6 +38,13 @@ type ButtonProps = {
   size?: (typeof ButtonSize)[number];
   leftIcon?: IconType | LucideIcon | string;
   rightIcon?: IconType | LucideIcon | string;
+  leftNode?: ({
+    disabled,
+    isLoading,
+    variant,
+    size,
+    isDarkBg,
+  }: RenderProps) => React.ReactNode;
   classNames?: {
     leftIcon?: string;
     rightIcon?: string;
@@ -48,6 +63,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       size = "base",
       isDarkBg = false,
       leftIcon: LeftIcon,
+      leftNode,
       rightIcon: RightIcon,
       classNames,
       isActive,
@@ -208,10 +224,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             <ImSpinner2 className="animate-spin" />
           </div>
         )}
-        {LeftIcon && (
+        {(LeftIcon || leftNode) && (
           <div
             className={cn([
-              size === "base" && "mr-1",
+              size === "base" && "mr-2",
               size === "sm" && "mr-1.5",
               size === "xs" && "mr-1",
             ])}
@@ -231,6 +247,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             ) : (
               LeftIcon
             )}
+            {leftNode &&
+              leftNode({
+                disabled: buttonDisabled,
+                isLoading,
+                variant,
+                size,
+                isDarkBg,
+              })}
           </div>
         )}
         {children}
