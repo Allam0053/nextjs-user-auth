@@ -49,7 +49,21 @@ export function ImageComponent({
       };
     }
     if (windowSize.width >= 1024) {
-      const currentWidth = 240;
+      const currentWidth = 200;
+      return {
+        width: currentWidth,
+        height: heightDependOnWidth(currentWidth),
+      };
+    }
+    if (windowSize.height < 520) {
+      const currentWidth = 100;
+      return {
+        width: currentWidth,
+        height: heightDependOnWidth(currentWidth),
+      };
+    }
+    if (windowSize.height < 620) {
+      const currentWidth = 120;
       return {
         width: currentWidth,
         height: heightDependOnWidth(currentWidth),

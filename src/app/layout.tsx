@@ -56,7 +56,9 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body className="bg-[#F7EFED]">{children}</body>
+      <body className="h-full w-full overflow-hidden bg-[#F7EFED]">
+        {children}
+      </body>
     </html>
   );
 }

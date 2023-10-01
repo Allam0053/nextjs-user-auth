@@ -47,6 +47,8 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import ImageChilli from "public/images/flavor/1.png";
 import ImagePlane from "public/images/decoration/2.png";
+import ImagePotato from "public/images/decoration/3.png";
+import ImageChilli2 from "public/images/decoration/5.png";
 
 type Variant = "nachos" | "crunchex" | "tomato" | "chaska";
 
@@ -132,7 +134,7 @@ export default function Page() {
   }, [selectedVariant, qtyWatch]);
 
   return (
-    <Layout isHScreen>
+    <Layout className="justify-between" isHScreen>
       <Toaster
         containerStyle={{
           top: 84,
@@ -141,15 +143,27 @@ export default function Page() {
           right: 20,
         }}
       />
-      <div className="h-[48px] w-full lg:h-[60px]" />
       <Section
         className={cn(
           "w-full flex-col",
           "md:w-[75vw]",
-          "lg:grid lg:w-[90vw] lg:grid-cols-2 lg:gap-4"
+          "lg:grid lg:max-h-[60%] lg:w-[90vw] lg:grid-cols-2 lg:gap-4"
         )}
         id="main"
       >
+        <NextImage
+          useSkeleton
+          src={ImagePotato.src}
+          width={200}
+          height={148}
+          alt="Chilli"
+          className={cn(
+            "absolute bottom-0 left-0 scale-50",
+            "md:scale-75",
+            "lg:-translate-x-[45%] lg:translate-y-[60%] lg:scale-90",
+            "xl:scale-100"
+          )}
+        />
         <div className="relative flex w-full flex-col items-center lg:h-full lg:items-start lg:justify-center">
           <Typography
             variant={windowSize.width > 768 ? "j1" : "h1"}
@@ -246,6 +260,21 @@ export default function Page() {
         </div>
         <div className="h-8 lg:hidden" />
         <div className="relative flex w-full justify-center">
+          {/* dekorasi cabe di pinggir kanan */}
+          <NextImage
+            useSkeleton
+            src={ImageChilli2.src}
+            width={105}
+            height={250}
+            alt="Blurry Chilli"
+            className={cn(
+              "absolute bottom-0 right-0 translate-x-[50%] translate-y-[25%] rotate-[16deg] scale-[.25]",
+              "md:translate-x-[75%] md:translate-y-[50%] md:scale-75",
+              "lg:scale-80 lg:-translate-y-[5%] lg:translate-x-[100%]",
+              "xl:scale-100"
+            )}
+          />
+          {/* dekorasi pesawat di atas jajan */}
           <NextImage
             useSkeleton
             src={ImagePlane.src}
@@ -253,7 +282,10 @@ export default function Page() {
             height={400}
             alt="Chilli"
             className={cn(
-              "absolute left-0 top-0 -translate-x-[30%] -translate-y-[37%] scale-50 md:-translate-x-[25%] md:-translate-y-[20%] md:scale-75 lg:-translate-x-[45%] lg:scale-90 xl:-translate-x-[30%] xl:scale-100"
+              "absolute left-0 top-0 -translate-x-[30%] -translate-y-[37%] scale-50",
+              "md:-translate-x-[25%] md:-translate-y-[20%] md:scale-75",
+              "lg:-translate-x-[45%] lg:scale-90",
+              "xl:-translate-x-[30%] xl:scale-100"
             )}
           />
           {selectedVariant === "crunchex" ? (
@@ -272,12 +304,12 @@ export default function Page() {
             <CornComponent windowSize={windowSize} />
           </div>
         </div>
-        <div className="h-8" />
+        <div className="h-8 lg:hidden" />
       </Section>
       {windowSize.width <= 768 && (
         <Section
           className={cn(
-            "w-full flex-1 flex-col rounded-t-lg bg-white",
+            "max-h-[220px] w-full flex-1 flex-col rounded-t-lg bg-white",
             "md:w-[75vw]",
             "lg:hidden"
           )}
@@ -379,13 +411,14 @@ export default function Page() {
       {windowSize.width > 768 && (
         <Section
           className={cn(
-            "w-full flex-1 rounded-t-lg bg-emerald-700",
+            "relative max-h-[200px] w-full flex-1 rounded-t-lg bg-emerald-700 p-0",
             "md:w-[90vw]",
             "lg:w-[80vw]"
           )}
           id="menu"
         >
-          <div className="grid h-full w-full grid-cols-3 gap-4">
+          <div className="absolute h-full w-full bg-[url('/images/decoration/4.png')] bg-cover bg-bottom opacity-20" />
+          <div className="grid h-full w-full grid-cols-3 gap-4 p-2">
             {itemOnDisplay.map((item) => (
               <ItemCardOnDisplay
                 key={`item-card-on-display-${item}`}
@@ -413,7 +446,7 @@ export const ItemCardOnDisplay = React.forwardRef<
     ref={forwardRef}
     {...rest}
   >
-    <div className="flex h-[80%] w-full -translate-x-2 flex-col justify-center gap-1 rounded-md bg-white pl-2">
+    <div className="flex h-[80%] max-h-[120px] w-full -translate-x-2 flex-col justify-center gap-1 rounded-md bg-white pl-2">
       <Typography variant="h6">{wording[variant].TITLE}</Typography>
       <div className="flex gap-1">
         <AiFillStar className="h-4 w-4 text-amber-500" />

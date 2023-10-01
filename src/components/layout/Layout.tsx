@@ -15,9 +15,11 @@ import { cn } from "@/lib/utils";
 export default function Layout({
   children,
   isHScreen,
+  className,
 }: {
   children: React.ReactNode;
   isHScreen?: boolean;
+  className?: string;
 }) {
   // Put Header or Footer Here
   return (
@@ -26,7 +28,8 @@ export default function Layout({
         className={cn(
           "flex w-full flex-col",
           isHScreen && "h-screen",
-          "md:items-center"
+          "md:items-center",
+          className
         )}
       >
         <div className="flex h-16 w-full">
