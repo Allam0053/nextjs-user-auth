@@ -38,6 +38,7 @@ import {
   ChaskaOnDisplayImageComponent,
   CrunchexImageComponent,
   CrunchexOnDisplayImageComponent,
+  ItemCardOnDisplay,
   NachosImageComponent,
   NachosOnDisplayImageComponent,
   TomatoImageComponent,
@@ -49,11 +50,11 @@ import ImageChilli from "public/images/flavor/1.png";
 import ImagePlane from "public/images/decoration/2.png";
 import ImagePotato from "public/images/decoration/3.png";
 import ImageChilli2 from "public/images/decoration/5.png";
+import { selectedVariantAtom } from "./components/Atom";
 
 type Variant = "nachos" | "crunchex" | "tomato" | "chaska";
 
 const qtyId = wording.form.QTY.toLowerCase();
-export const selectedVariantAtom = atom<Variant>("nachos");
 
 export default function Page() {
   const windowSize = useWindowSize();
@@ -433,47 +434,3 @@ export default function Page() {
     </Layout>
   );
 }
-
-export const ItemCardOnDisplay = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentPropsWithRef<"div"> & {
-    variant: Variant;
-    windowSize: WindowSize;
-  }
->(({ children, className, variant, windowSize, ...rest }, forwardRef) => (
-  <div
-    className="flex h-full w-full flex-row-reverse items-center"
-    ref={forwardRef}
-    {...rest}
-  >
-    <div className="flex h-[80%] max-h-[120px] w-full -translate-x-2 flex-col justify-center gap-1 rounded-md bg-white pl-2">
-      <Typography variant="h6">{wording[variant].TITLE}</Typography>
-      <div className="flex gap-1">
-        <AiFillStar className="h-4 w-4 text-amber-500" />
-        <AiFillStar className="h-4 w-4 text-amber-500" />
-        <AiFillStar className="h-4 w-4 text-amber-500" />
-        <AiFillStar className="h-4 w-4 text-amber-500" />
-        <AiFillStar className="h-4 w-4 text-amber-500" />
-        <div className="w-2" />
-        <Typography variant="h6" className="font-bold">
-          ₹10
-        </Typography>
-      </div>
-      <Button
-        variant="primary-nachos"
-        className="flex w-fit rounded-full text-black"
-      >
-        ORDER NOW
-      </Button>
-    </div>
-    {variant === "crunchex" ? (
-      <CrunchexOnDisplayImageComponent windowSize={windowSize} />
-    ) : variant === "tomato" ? (
-      <TomatoOnDisplayImageComponent windowSize={windowSize} />
-    ) : variant === "chaska" ? (
-      <ChaskaOnDisplayImageComponent windowSize={windowSize} />
-    ) : (
-      <NachosOnDisplayImageComponent windowSize={windowSize} />
-    )}
-  </div>
-));

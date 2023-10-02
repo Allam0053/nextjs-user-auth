@@ -201,3 +201,50 @@ export function ChaskaOnDisplayImageComponent({
     ...rest,
   });
 }
+import Typography from "@/components/Typography";
+import wording from "@/constant/wording";
+import Button from "@/components/buttons/Button";
+import { AiFillStar } from "react-icons/ai";
+export const ItemCardOnDisplay = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentPropsWithRef<"div"> & {
+    variant: Variant;
+    windowSize: WindowSize;
+  }
+>(({ children, className, variant, windowSize, ...rest }, forwardRef) => (
+  <div
+    className="flex h-full w-full flex-row-reverse items-center"
+    ref={forwardRef}
+    {...rest}
+  >
+    <div className="flex h-[80%] max-h-[120px] w-full -translate-x-2 flex-col justify-center gap-1 rounded-md bg-white pl-2">
+      <Typography variant="h6">{wording[variant].TITLE}</Typography>
+      <div className="flex gap-1">
+        <AiFillStar className="h-4 w-4 text-amber-500" />
+        <AiFillStar className="h-4 w-4 text-amber-500" />
+        <AiFillStar className="h-4 w-4 text-amber-500" />
+        <AiFillStar className="h-4 w-4 text-amber-500" />
+        <AiFillStar className="h-4 w-4 text-amber-500" />
+        <div className="w-2" />
+        <Typography variant="h6" className="font-bold">
+          ₹10
+        </Typography>
+      </div>
+      <Button
+        variant="primary-nachos"
+        className="flex w-fit rounded-full text-black"
+      >
+        ORDER NOW
+      </Button>
+    </div>
+    {variant === "crunchex" ? (
+      <CrunchexOnDisplayImageComponent windowSize={windowSize} />
+    ) : variant === "tomato" ? (
+      <TomatoOnDisplayImageComponent windowSize={windowSize} />
+    ) : variant === "chaska" ? (
+      <ChaskaOnDisplayImageComponent windowSize={windowSize} />
+    ) : (
+      <NachosOnDisplayImageComponent windowSize={windowSize} />
+    )}
+  </div>
+));

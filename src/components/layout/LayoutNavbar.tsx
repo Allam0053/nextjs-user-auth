@@ -16,10 +16,10 @@ import { useWindowSize } from "usehooks-ts";
 import useSearchBar from "@/hooks/useSearchBar/master";
 import IconButton from "@/components/buttons/IconButton";
 import { HiBars3 } from "react-icons/hi2";
-import { selectedVariantAtom } from "@/app/page";
 
 import { HiOutlineSearch, HiOutlineXCircle } from "react-icons/hi";
 import { useAtom } from "jotai";
+import { selectedVariantAtom } from "@/app/components/Atom";
 
 export type IndexNavbarProps = {
   transparent?: boolean;
