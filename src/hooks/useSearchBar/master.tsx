@@ -6,6 +6,7 @@ import { HiOutlineSearch, HiOutlineXCircle } from "react-icons/hi";
 import { useDebounce } from "usehooks-ts";
 
 import Input, { InputProps } from "@/components/forms/Input";
+import { cn } from "@/lib/utils";
 
 // TODO: extract this to another file
 export default function useSearchBar(
@@ -94,11 +95,20 @@ export default function useSearchBar(
             placeholder={placeholder}
             helperText={helperText}
             leftIcon={HiOutlineSearch}
-            className={className}
+            leftIconClassName="text-slate-200 rounded group-hover:text-slate-100 group-active:bg-slate-600 active:text-slate-100 group-hover:rotate-[-15deg] transition"
+            containerClassName="group"
+            className={cn(
+              "bg-slate-800 text-slate-100 transition placeholder:text-slate-300",
+              className
+            )}
             onKeyDown={onEnter}
             rightNode={
-              <button type="button" className="p-1" onClick={onClearSearch}>
-                <HiOutlineXCircle className="text-typo-icons text-xl" />
+              <button
+                type="button"
+                className="rounded p-1 hover:bg-slate-600"
+                onClick={onClearSearch}
+              >
+                <HiOutlineXCircle className="text-typo-icons text-xl text-slate-200 hover:text-slate-100 active:text-slate-100" />
               </button>
             }
             onChange={onChange}

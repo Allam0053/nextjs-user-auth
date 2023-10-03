@@ -11,6 +11,7 @@ import {
 } from "@/lib/data-converter";
 
 import Typography from "@/components/Typography";
+import { cn } from "@/lib/utils";
 export type InputProps = {
   /** Input label */
   label?: React.ReactNode;
@@ -39,6 +40,7 @@ export type InputProps = {
   rightNode?: React.ReactNode;
   containerClassName?: string;
   className?: string;
+  leftIconClassName?: string;
   isShowInputFormat?: boolean;
   isText?: boolean;
 } & React.ComponentPropsWithoutRef<"input">;
@@ -58,6 +60,7 @@ export default function Input({
   isShowInputFormat,
   containerClassName,
   className,
+  leftIconClassName,
   isText,
   ...rest
 }: InputProps) {
@@ -123,7 +126,10 @@ export default function Input({
             {typeof LeftIcon === "string" ? (
               <Typography variant="s4">{LeftIcon}</Typography>
             ) : (
-              <LeftIcon size="1em" className="text-typo text-xl" />
+              <LeftIcon
+                size="1em"
+                className={cn("text-typo text-xl", leftIconClassName)}
+              />
             )}
           </div>
         )}

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import UnstyledLink, {
   UnstyledLinkProps,
 } from "@/components/links/UnstyledLink";
+import { Variant } from "@/types/variant";
 
 const ButtonLinkVariant = [
   "primary",
@@ -16,11 +17,12 @@ const ButtonLinkVariant = [
   "dark",
   "danger",
 ] as const;
-const ButtonLinkSize = ["sm", "base"] as const;
+const ButtonLinkSize = ["xs", "sm", "base"] as const;
 
 type ButtonLinkProps = {
   isDarkBg?: boolean;
   variant?: (typeof ButtonLinkVariant)[number];
+  primary?: Variant;
   size?: (typeof ButtonLinkSize)[number];
   leftIcon?: IconType | LucideIcon;
   rightIcon?: IconType | LucideIcon;
@@ -28,6 +30,7 @@ type ButtonLinkProps = {
     leftIcon?: string;
     rightIcon?: string;
   };
+  isActive?: boolean;
 } & UnstyledLinkProps;
 
 const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
@@ -36,15 +39,20 @@ const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
       children,
       className,
       variant = "primary",
+      primary,
       size = "base",
       isDarkBg = false,
       leftIcon: LeftIcon,
       rightIcon: RightIcon,
       classNames,
+      isActive,
       ...rest
     },
     ref
   ) => {
+    const activated =
+      primary &&
+      ["nachos", "crunchex", "tomato", "chaska"].find((val) => val === primary);
     return (
       <UnstyledLink
         ref={ref}
@@ -58,6 +66,10 @@ const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
           [
             size === "base" && ["px-3 py-1.5", "text-sm md:text-base"],
             size === "sm" && ["px-2 py-1", "text-xs md:text-sm"],
+            size === "xs" && [
+              "min-h-[1rem] px-1 md:min-h-[1.25rem]",
+              "text-[0.625rem] leading-[0.75rem] md:text-xs",
+            ],
           ],
           //#endregion  //*======== Size ===========
           //#region  //*=========== Variants ===========
@@ -102,6 +114,12 @@ const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
               "hover:bg-gray-800 active:bg-gray-700 disabled:bg-gray-700",
             ],
           ],
+          activated === "nachos" && "border-amber-500 text-amber-500",
+          activated === "crunchex" && "border-sky-500 text-sky-500",
+          activated === "tomato" && "border-red-500 text-red-500",
+          activated === "chaska" && "border-emerald-500 text-emerald-500",
+          !isActive && "text-slate-700",
+          isActive && "bg-white text-slate-700",
           //#endregion  //*======== Variants ===========
           "disabled:cursor-not-allowed",
           className

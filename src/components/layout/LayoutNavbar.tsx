@@ -18,8 +18,14 @@ import IconButton from "@/components/buttons/IconButton";
 import { HiBars3 } from "react-icons/hi2";
 
 import { HiOutlineSearch, HiOutlineXCircle } from "react-icons/hi";
+import { BiSolidHome } from "react-icons/bi";
 import { useAtom } from "jotai";
-import { selectedVariantAtom } from "@/app/components/Atom";
+import { cartOpenAtom, selectedVariantAtom } from "@/app/components/Atom";
+import { FaCircleInfo, FaHandshakeSimple } from "react-icons/fa6";
+import { BsFillTriangleFill } from "react-icons/bs";
+
+import ButtonLink from "../links/ButtonLink";
+import { BsCartPlus } from "react-icons/bs";
 
 export type IndexNavbarProps = {
   transparent?: boolean;
@@ -53,6 +59,7 @@ export default function Navbar({
     ""
   );
   const [selectedVariant] = useAtom(selectedVariantAtom);
+  const [cartOpen, setCartOpen] = useAtom(cartOpenAtom);
   return (
     <>
       <nav
@@ -88,8 +95,24 @@ export default function Navbar({
                 isActive={searchOpen}
               />
               <IconButton
+                icon={BsCartPlus}
+                onClick={() =>
+                  setCartOpen((prev) => {
+                    return "main";
+                  })
+                }
+                className="h-fit lg:hidden"
+                variant={selectedVariant}
+                isActive={
+                  !(
+                    cartOpen === "closed" ||
+                    (cartOpen as unknown as boolean) === false
+                  )
+                }
+              />
+              <IconButton
                 icon={HiBars3}
-                onClick={() => setNavbarOpen(!navbarOpen)}
+                onClick={() => setNavbarOpen((prev) => !prev)}
                 className="h-fit lg:hidden"
                 variant={`primary-${selectedVariant}` as const}
                 isActive={navbarOpen}
@@ -105,44 +128,56 @@ export default function Navbar({
             id="example-navbar-warning"
           >
             <div className="h-2" />
-            <ul className="flex list-none flex-col gap-2 rounded-md bg-white lg:ml-auto lg:flex-row">
+            <ul className="flex list-none flex-col gap-2 rounded-md bg-white lg:ml-auto lg:flex-row lg:bg-transparent">
               <li className="flex items-center" data-fade="6">
-                <a
-                  className="flex items-center px-3 py-4 text-xs font-bold uppercase text-slate-700 hover:text-slate-500 lg:py-2"
-                  href="#"
-                  target="_blank"
-                  rel="noreferrer"
+                <ButtonLink
+                  isActive
+                  variant="ghost"
+                  href={"#"}
+                  leftIcon={BiSolidHome}
+                  primary={selectedVariant}
+                  className="font-semibold uppercase"
+                  size="sm"
                 >
-                  <BsFacebook className="h-4 w-4" />
-                  <span className="ml-2 inline-block lg:hidden">Share</span>
-                </a>
+                  Home
+                </ButtonLink>
+              </li>
+              <li className="flex items-center" data-fade="6">
+                <ButtonLink
+                  variant="ghost"
+                  href={"#"}
+                  leftIcon={FaCircleInfo}
+                  primary={selectedVariant}
+                  className="font-semibold uppercase"
+                  size="sm"
+                >
+                  About
+                </ButtonLink>
               </li>
 
-              <li className="flex items-center" data-fade="7">
-                <a
-                  className="flex items-center px-3 py-4 text-xs font-bold uppercase text-slate-700 hover:text-slate-500 lg:py-2"
-                  href="#"
-                  target="_blank"
-                  rel="noreferrer"
+              <li className="flex items-center" data-fade="6">
+                <ButtonLink
+                  variant="ghost"
+                  href={"#"}
+                  leftIcon={BsFillTriangleFill}
+                  primary={selectedVariant}
+                  className="font-semibold uppercase"
+                  size="sm"
                 >
-                  <BsTwitter className="h-4 w-4" />
-                  <span className="ml-2 inline-block lg:hidden">Tweet</span>
-                </a>
+                  Chip
+                </ButtonLink>
               </li>
-
-              <li
-                className="items-centerbg-white flex rounded-md"
-                data-fade="8"
-              >
-                <a
-                  className="flex items-center px-3 py-4 text-xs font-bold uppercase text-slate-700 hover:text-slate-500 lg:py-2"
-                  href="#"
-                  target="_blank"
-                  rel="noreferrer"
+              <li className="flex items-center" data-fade="6">
+                <ButtonLink
+                  variant="ghost"
+                  href={"#"}
+                  leftIcon={FaHandshakeSimple}
+                  primary={selectedVariant}
+                  className="font-semibold uppercase"
+                  size="sm"
                 >
-                  <BsGithub className="h-4 w-4" />
-                  <span className="ml-2 inline-block lg:hidden">Star</span>
-                </a>
+                  Services
+                </ButtonLink>
               </li>
             </ul>
             <div className="h-2" />
@@ -150,12 +185,28 @@ export default function Navbar({
 
           <div
             className={clsxm(
-              "flex-grow items-center rounded md:rounded-none lg:flex lg:max-w-[240px] lg:bg-opacity-0 lg:shadow-none",
+              "flex-grow items-center gap-2 rounded md:rounded-none lg:flex lg:max-w-[240px] lg:bg-opacity-0 lg:shadow-none",
               searchOpen ? " block" : " hidden"
             )}
           >
             <div className="h-2" />
             <searchBar.SearchBarComponent />
+            <IconButton
+              icon={BsCartPlus}
+              onClick={() =>
+                setCartOpen((prev) => {
+                  return "main";
+                })
+              }
+              className="hidden h-fit lg:inline-flex"
+              variant={selectedVariant}
+              isActive={
+                !(
+                  cartOpen === "closed" ||
+                  (cartOpen as unknown as boolean) === false
+                )
+              }
+            />
             <div className="h-2" />
           </div>
         </div>

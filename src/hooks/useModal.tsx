@@ -1,12 +1,17 @@
 export const STATUS = {
-  main: 'main' as const,
-  confirm: 'confirm' as const,
-  confirmed: 'confirmed' as const,
-  failed: 'failed' as const,
-  closed: 'closed' as const,
+  main: "main" as const,
+  confirm: "confirm" as const,
+  confirmed: "confirmed" as const,
+  failed: "failed" as const,
+  closed: "closed" as const,
 };
 
-type ModalStatusType = 'main' | 'confirm' | 'confirmed' | 'failed' | 'closed'; // 'loading' |
+export type ModalStatusType =
+  | "main"
+  | "confirm"
+  | "confirmed"
+  | "failed"
+  | "closed"; // 'loading' |
 
 // export type ModalContextType<T> = {
 export type ModalContextType = {
@@ -21,22 +26,22 @@ export type ModalDispatchContextType = React.Dispatch<ModalActionType>;
 
 // export type ModalActionType<T> =
 export type ModalActionType =
-  | { type: 'NEXT' } // for login purpose
-  | { type: 'PREV' }
-  | { type: 'CLOSE' } // for modifying the state freely
-  | { type: 'OPEN' } // for refreshing purpose
+  | { type: "NEXT" } // for login purpose
+  | { type: "PREV" }
+  | { type: "CLOSE" } // for modifying the state freely
+  | { type: "OPEN" } // for refreshing purpose
   | {
-      type: 'FAILED';
+      type: "FAILED";
       payload: {
         failedCode?: number;
         failedMessage?: string;
         failedErrors?: string[];
       };
     }
-  | { type: 'OPEN_AT'; payload: ModalStatusType };
+  | { type: "OPEN_AT"; payload: ModalStatusType };
 
 const initial_value: ModalContextType = {
-  status: 'closed',
+  status: "closed",
 };
 
 export function reducer(
@@ -44,40 +49,40 @@ export function reducer(
   action: ModalActionType
 ): ModalContextType {
   switch (action.type) {
-    case 'NEXT': {
-      if (state.status === STATUS.closed) return { ...state, status: 'main' };
-      if (state.status === STATUS.main) return { ...state, status: 'confirm' };
+    case "NEXT": {
+      if (state.status === STATUS.closed) return { ...state, status: "main" };
+      if (state.status === STATUS.main) return { ...state, status: "confirm" };
       if (state.status === STATUS.confirm)
-        return { ...state, status: 'confirmed' };
-      if (state.status === STATUS.failed) return { ...state, status: 'closed' };
+        return { ...state, status: "confirmed" };
+      if (state.status === STATUS.failed) return { ...state, status: "closed" };
       if (state.status === STATUS.confirmed)
-        return { ...state, status: 'closed' };
+        return { ...state, status: "closed" };
       return state ?? { ...initial_value };
     }
-    case 'PREV': {
+    case "PREV": {
       if (state.status === STATUS.closed)
-        return { ...state, status: 'confirmed' };
-      if (state.status === STATUS.main) return { ...state, status: 'closed' };
-      if (state.status === STATUS.confirm) return { ...state, status: 'main' };
+        return { ...state, status: "confirmed" };
+      if (state.status === STATUS.main) return { ...state, status: "closed" };
+      if (state.status === STATUS.confirm) return { ...state, status: "main" };
       if (state.status === STATUS.failed)
-        return { ...state, status: 'confirm' };
+        return { ...state, status: "confirm" };
       if (state.status === STATUS.confirmed)
-        return { ...state, status: 'confirm' };
+        return { ...state, status: "confirm" };
       return state ?? { ...initial_value };
     }
-    case 'CLOSE': {
+    case "CLOSE": {
       return {
         ...state,
         status: STATUS.closed,
       };
     }
-    case 'OPEN': {
+    case "OPEN": {
       return {
         ...state,
         status: STATUS.main,
       };
     }
-    case 'FAILED': {
+    case "FAILED": {
       return {
         ...state,
         status: STATUS.failed,
@@ -86,7 +91,7 @@ export function reducer(
         failedErrors: action.payload.failedErrors,
       };
     }
-    case 'OPEN_AT': {
+    case "OPEN_AT": {
       return {
         ...state,
         status: action.payload,

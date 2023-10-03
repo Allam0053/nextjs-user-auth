@@ -21,7 +21,7 @@ import Button from "@/components/buttons/Button";
 import Input from "@/components/forms/Input";
 import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { FormProvider, useForm } from "react-hook-form";
-import { get } from "lodash";
+import { get, set } from "lodash";
 import { BsCartPlus } from "react-icons/bs";
 import { StaticImageData } from "next/image";
 import { cn } from "@/lib/utils";
@@ -50,7 +50,12 @@ import ImageChilli from "public/images/flavor/1.png";
 import ImagePlane from "public/images/decoration/2.png";
 import ImagePotato from "public/images/decoration/3.png";
 import ImageChilli2 from "public/images/decoration/5.png";
-import { selectedVariantAtom } from "./components/Atom";
+import {
+  cartItemsAtom,
+  cartOpenAtom,
+  selectedVariantAtom,
+} from "./components/Atom";
+import CartModal from "./components/CartModal";
 
 type Variant = "nachos" | "crunchex" | "tomato" | "chaska";
 
@@ -64,6 +69,8 @@ export default function Page() {
   const qtyWatch = methods.watch(qtyId);
 
   const [selectedVariant, setSelectedVariant] = useAtom(selectedVariantAtom);
+  const [cartOpen, setCartOpen] = useAtom(cartOpenAtom);
+  const [cartItems, setCartItem] = useAtom(cartItemsAtom);
   const selectNachosFn = React.useCallback(
     () => setSelectedVariant("nachos"),
     []
@@ -128,11 +135,33 @@ export default function Page() {
       })
       .then((message: string) => {
         toast.success(message);
+        setCartItem((prev) => [
+          ...prev,
+          {
+            id: `cart-item-${selectedVariant}`,
+            variant: selectedVariant,
+            count: qtyWatch,
+            price: 10,
+            imageSource:
+              selectedVariant === "crunchex"
+                ? CrunchexPhoneImage
+                : selectedVariant === "tomato"
+                ? TomatoPhoneImage
+                : selectedVariant === "chaska"
+                ? ChaskaPhoneImage
+                : NachosPhoneImage,
+            color: selectedVariant,
+          },
+        ]);
       })
       .catch((err: Error) => {
         toast.error(err?.toString());
       });
   }, [selectedVariant, qtyWatch]);
+
+  React.useEffect(() => {
+    setValue(qtyId, 0);
+  }, [selectedVariant]);
 
   return (
     <Layout className="justify-between" isHScreen>
@@ -144,6 +173,7 @@ export default function Page() {
           right: 20,
         }}
       />
+      <CartModal />
       <Section
         className={cn(
           "w-full flex-col",
@@ -208,7 +238,18 @@ export default function Page() {
                 <Button
                   className="h-12 justify-between rounded-full"
                   leftNode={({ size }) => (
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-500">
+                    <div
+                      className={cn(
+                        "flex h-6 w-6 items-center justify-center rounded-full",
+                        selectedVariant === "crunchex"
+                          ? "bg-sky-500"
+                          : selectedVariant === "tomato"
+                          ? "bg-red-500"
+                          : selectedVariant === "chaska"
+                          ? "bg-emerald-500"
+                          : "bg-amber-500"
+                      )}
+                    >
                       <BsCartPlus
                         size="1em"
                         className={cn([
@@ -286,7 +327,8 @@ export default function Page() {
               "absolute left-0 top-0 -translate-x-[30%] -translate-y-[37%] scale-50",
               "md:-translate-x-[25%] md:-translate-y-[20%] md:scale-75",
               "lg:-translate-x-[45%] lg:scale-90",
-              "xl:-translate-x-[30%] xl:scale-100"
+              "xl:-translate-x-[30%] xl:scale-100",
+              "-z-10"
             )}
           />
           {selectedVariant === "crunchex" ? (
@@ -406,6 +448,7 @@ export default function Page() {
             >
               {wording.form.SUBMIT}
             </Button>
+            <br className="h-2" />
           </form>
         </Section>
       )}
